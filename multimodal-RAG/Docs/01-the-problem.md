@@ -19,9 +19,7 @@
 
 ## Why the classic pipeline fails
 
-```
-PDF → extract text → chunk → embed → retrieve → answer
-```
+The classic pipeline, in order: PDF → extract text → chunk → embed → retrieve → answer.
 
 This pipeline is correct for prose and silently wrong for everything else.
 
@@ -58,9 +56,9 @@ If the evidence is not text, **you must convert it to text at ingestion time** �
 
 That single sentence produces the whole architecture:
 
-```
-ingestion:  every modality → text (for search)   +   original (for answering)
-serving:    search the text                      →   answer from the original
-```
+| Pipeline | Does | Keeps |
+|---|---|---|
+| **Ingestion** | every modality → text, for search | the original, for answering |
+| **Serving** | searches the text | answers from the original |
 
 Next: [ingestion →](02-ingestion.md)
