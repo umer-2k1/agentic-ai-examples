@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multimodal RAG — Visual Notes</title>
+<style>
+  :root{
+    --ink:#101828; --muted:#5b6472; --soft:#98a2b3;
+    --line:#e6e8ec; --bg:#fbfbfc; --card:#ffffff;
+    --purple:#7048e8; --blue:#1971c2; --green:#2f9e44;
+    --orange:#e8590c; --cyan:#0c8599; --red:#e03131; --amber:#f08c00;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased;
+    display:flex; min-height:100vh;
+  }
+
+  /* ---------- sidebar ---------- */
+  aside{
+    width:272px; flex:0 0 272px; background:#0f172a; color:#cbd5e1;
+    position:sticky; top:0; height:100vh; padding:28px 18px;
+    display:flex; flex-direction:column; gap:26px; overflow:auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px; padding:0 8px}
+  .brand-mark{
+    width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#7048e8,#9775fa);
+    display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;
+  }
+  .brand-t{font-size:13px;font-weight:650;color:#fff;letter-spacing:.2px}
+  .brand-s{font-size:11px;color:#7c8aa0;margin-top:2px}
+  nav{display:flex;flex-direction:column;gap:2px}
+  nav button{
+    all:unset; cursor:pointer; display:flex; align-items:center; gap:11px;
+    padding:9px 10px; border-radius:9px; font-size:13.5px; color:#aab6c8;
+    border-left:2px solid transparent; transition:background .15s,color .15s;
+  }
+  nav button:hover{background:#182338; color:#e8eef8}
+  nav button.active{background:#1a2540; color:#fff; border-left-color:#8b6cf5}
+  nav .n{
+    width:22px;height:22px;border-radius:6px;background:#1e2a44;color:#93a4bd;
+    display:grid;place-items:center;font-size:11px;font-weight:600;flex:0 0 22px;
+  }
+  nav button.active .n{background:#7048e8;color:#fff}
+  .legend{margin-top:auto; padding:14px 12px; border:1px solid #1f2b42; border-radius:12px}
+  .legend h4{margin:0 0 9px; font-size:10.5px; letter-spacing:.12em; color:#7c8aa0; font-weight:600}
+  .legend div{display:flex; align-items:center; gap:8px; font-size:11.5px; color:#aab6c8; padding:2.5px 0}
+  .legend i{width:8px;height:8px;border-radius:50%;display:block}
+
+  /* ---------- main ---------- */
+  main{flex:1; min-width:0; padding:44px 52px 80px; max-width:1280px}
+  .kicker{font-size:11.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:10px}
+  h1{font-size:34px; line-height:1.15; letter-spacing:-.02em; margin:0 0 10px; font-weight:680}
+  .sub{font-size:15.5px; color:var(--muted); margin:0 0 26px; max-width:70ch; line-height:1.55}
+
+  .figure{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:10px; box-shadow:0 1px 2px rgba(16,24,40,.04), 0 12px 28px -18px rgba(16,24,40,.18);
+    cursor:zoom-in; position:relative; transition:box-shadow .2s, transform .2s;
+  }
+  .figure:hover{box-shadow:0 1px 2px rgba(16,24,40,.05), 0 20px 40px -22px rgba(16,24,40,.28)}
+  .figure img{width:100%; height:auto; display:block; border-radius:9px}
+  .zoom-hint{
+    position:absolute; right:16px; bottom:16px; background:rgba(16,24,40,.82); color:#fff;
+    font-size:11px; padding:5px 9px; border-radius:7px; opacity:0; transition:opacity .2s; pointer-events:none;
+  }
+  .figure:hover .zoom-hint{opacity:1}
+
+  .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:26px}
+  .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:13px; padding:16px 17px;
+  }
+  .card h3{margin:0 0 6px; font-size:13.5px; font-weight:650; display:flex; align-items:center; gap:8px}
+  .card h3 i{width:8px;height:8px;border-radius:50%;display:block;flex:0 0 8px}
+  .card p{margin:0; font-size:13px; line-height:1.6; color:var(--muted)}
+
+  .callout{
+    margin-top:22px; padding:16px 18px; border-radius:13px;
+    background:#f4f1ff; border:1px solid #ddd2ff; font-size:14px; line-height:1.6; color:#312e81;
+  }
+  .callout b{font-weight:650}
+  .callout.warn{background:#fff7ed; border-color:#fed7aa; color:#7c2d12}
+
+  .steps{display:flex; flex-direction:column; gap:10px; margin-top:26px}
+  .step{display:grid; grid-template-columns:30px 1fr auto; gap:14px; align-items:center;
+        background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 16px}
+  .step .num{width:26px;height:26px;border-radius:8px;background:#f2f4f7;color:var(--muted);
+             display:grid;place-items:center;font-size:12px;font-weight:650}
+  .step .t{font-size:13.5px;font-weight:600}
+  .step .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .step .tag{font-size:11px;color:var(--soft);white-space:nowrap}
+
+  /* router demo */
+  .router{margin-top:26px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px}
+  .router h3{margin:0 0 4px; font-size:14px; font-weight:650}
+  .router p.hint{margin:0 0 16px; font-size:12.5px; color:var(--muted)}
+  .seg{display:inline-flex; background:#f2f4f7; border-radius:10px; padding:3px; gap:3px}
+  .seg button{all:unset; cursor:pointer; font-size:12.5px; padding:7px 14px; border-radius:8px; color:var(--muted)}
+  .seg button.on{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(16,24,40,.12); font-weight:600}
+  .route-row{display:grid; grid-template-columns:1fr 44px 1fr; gap:12px; align-items:center; margin-top:18px}
+  .node{border:1px solid var(--line); border-radius:12px; padding:14px 16px; opacity:.35; transition:.2s; background:#fff}
+  .node.on{opacity:1; border-color:#d0bfff; background:#faf8ff; box-shadow:0 8px 24px -16px rgba(112,72,232,.5)}
+  .node .lbl{font-size:11px; color:var(--soft); letter-spacing:.08em; text-transform:uppercase; margin-bottom:5px}
+  .node .nm{font-size:14px; font-weight:650}
+  .node .ds{font-size:12px; color:var(--muted); margin-top:4px}
+  .arrow{color:#c3cad6; text-align:center; font-size:18px}
+  .route-out{margin-top:14px; font-size:13px; color:var(--muted)}
+  .route-out b{color:var(--ink)}
+
+  footer{margin-top:54px; padding-top:18px; border-top:1px solid var(--line); font-size:12px; color:var(--soft); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+  /* lightbox */
+  .lb{position:fixed; inset:0; background:rgba(9,13,22,.92); display:none; z-index:50; overflow:hidden}
+  .lb.open{display:block}
+  .lb img{position:absolute; left:50%; top:50%; transform-origin:center; cursor:grab; user-select:none; max-width:none; background:#fff; border-radius:6px}
+  .lb img.drag{cursor:grabbing}
+  .lb-bar{position:absolute; top:16px; right:16px; display:flex; gap:8px; z-index:2}
+  .lb-bar button{
+    all:unset; cursor:pointer; width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.12);
+    color:#fff; display:grid; place-items:center; font-size:15px; backdrop-filter:blur(6px);
+  }
+  .lb-bar button:hover{background:rgba(255,255,255,.22)}
+  .lb-tip{position:absolute; bottom:18px; left:0; right:0; text-align:center; color:#8b96a8; font-size:11.5px}
+
+  @media (max-width:980px){
+    body{flex-direction:column}
+    aside{width:auto; flex:none; height:auto; position:relative; padding:16px}
+    nav{flex-direction:row; overflow:auto; gap:6px}
+    nav button{white-space:nowrap; border-left:none; border-bottom:2px solid transparent}
+    nav button.active{border-left:none; border-bottom-color:#8b6cf5}
+    .legend{display:none}
+    main{padding:28px 20px 60px}
+    h1{font-size:26px}
+    .grid,.grid.three{grid-template-columns:1fr}
+    .route-row{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg)}
+  }
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">
+    <div class="brand-mark">M</div>
+    <div>
+      <div class="brand-t">Multimodal RAG</div>
+      <div class="brand-s">visual field notes</div>
+    </div>
+  </div>
+  <nav id="nav"></nav>
+  <div class="legend">
+    <h4>COLOUR CODE</h4>
+    <div><i style="background:#1971c2"></i> text</div>
+    <div><i style="background:#2f9e44"></i> table</div>
+    <div><i style="background:#e8590c"></i> visual</div>
+    <div><i style="background:#7048e8"></i> models</div>
+    <div><i style="background:#0c8599"></i> store / retrieval</div>
+    <div><i style="background:#e03131"></i> what breaks</div>
+  </div>
+</aside>
+
+<main id="main"></main>
+
+<div class="lb" id="lb">
+  <div class="lb-bar">
+    <button id="zo" title="Zoom out">−</button>
+    <button id="zi" title="Zoom in">+</button>
+    <button id="zr" title="Reset">⟲</button>
+    <button id="zc" title="Close">✕</button>
+  </div>
+  <img id="lbimg" alt="">
+  <div class="lb-tip">scroll to zoom · drag to pan · esc to close</div>
+</div>
+
+<script>
+const SECTIONS = [
+  {
+    id: "overview", n: "00", kicker: "OVERVIEW", color: "#7048e8",
+    title: "The whole idea, on one map",
+    sub: "Two pipelines share one index. Ingestion converts every modality to text so it can be found. Serving loads the original evidence so it can be answered.",
+    img: "diagrams/06-end-to-end.svg",
+    cards: [
+      ["#7048e8", "Searchable vs seeable", "Every modality becomes text so one query can rank it. The original pixels stay on disk so the answer can be grounded in them."],
+      ["#0c8599", "Two pipelines", "Ingestion is offline and expensive. Retrieval + generation are online and cheap. Optimise them separately."],
+      ["#2f9e44", "One index", "One embedding model, one namespace. The modality lives in metadata, not in a separate collection."]
+    ],
+    callout: "Convert every useful modality into something retrievable, then give the final model the original evidence it needs to answer accurately."
+  },
+  {
+    id: "problem", n: "01", kicker: "THE PROBLEM", color: "#e03131",
+    title: "A real PDF is not just text",
+    sub: "Four modalities share the page. Text extraction keeps one of them — and the other three disappear without an error.",
+    img: "diagrams/01-the-problem.svg",
+    cards: [
+      ["#1971c2", "Text survives", "Policies, summaries, notes: the full text comes out cleanly. Plain RAG is fine for this part."],
+      ["#2f9e44", "Tables get flattened", "Cells are concatenated left to right, so headers, units and row/column relationships are lost."],
+      ["#e8590c", "Images vanish", "Pixels are never read. A photo of a facility or a product cannot be retrieved by meaning."],
+      ["#7048e8", "Charts vanish", "The answer is a point on a line. If it is not written in a paragraph, it does not exist for the index."]
+    ],
+    callout: "None of this throws an error. Ingestion succeeds, retrieval succeeds, and the model answers confidently from the wrong evidence.",
+    warn: true
+  },
+  {
+    id: "ingestion", n: "02", kicker: "INGESTION", color: "#7048e8",
+    title: "Step 1 — the ingestion pipeline",
+    sub: "One PDF in, three modality-aware documents out. Everything after normalisation is identical for every modality.",
+    img: "diagrams/02-ingestion-pipeline.svg",
+    steps: [
+      ["1", "Extract", "Text blocks, tables and images, page by page", "PyMuPDF"],
+      ["2", "Normalise", "Text stays text, tables become markdown, images become a VLM summary", "LangChain Document"],
+      ["3", "Embed", "One text embedding model for all three", "MiniLM · 384-d"],
+      ["4", "Store", "Vector + metadata in one namespace", "Pinecone"]
+    ],
+    cards: [
+      ["#1971c2", "The summary is the index", "Only the VLM-written summary is embedded. The image itself is never vectorised."],
+      ["#e8590c", "Keep the original", "The image path travels in metadata. Search the summary, answer with the pixels."],
+      ["#e03131", "The vector-chart trap", "Charts are often vector drawings, not embedded images — a naive image pass silently misses them."]
+    ],
+    callout: "Metadata contract: source · page · modality · image_path. If modality or image_path is missing, the vision route silently never fires."
+  },
+  {
+    id: "store", n: "03", kicker: "VECTOR STORE", color: "#0c8599",
+    title: "What actually goes into Pinecone",
+    sub: "Same embedding model, same namespace. What differs is only the text that was embedded.",
+    img: "diagrams/03-vector-store.svg",
+    cards: [
+      ["#1971c2", "Text record", "The page's prose. Metadata: page, modality, source."],
+      ["#2f9e44", "Table record", "The table as markdown, so the header stays attached to the cells."],
+      ["#e8590c", "Visual record", "The factual summary + the image path. The path is what makes vision possible."],
+      ["#0c8599", "One namespace", "One search ranks text, tables and charts together. Split only when modalities need different models."]
+    ],
+    callout: "A chart is not a photo. An image encoder matches “a line chart”; a factual text summary matches “revenue peaked in Q4”."
+  },
+  {
+    id: "retrieval", n: "04", kicker: "RETRIEVAL", color: "#0c8599",
+    title: "Step 2 — retrieval in action",
+    sub: "The query never touches an image. It matches a summary, then the original is loaded.",
+    img: "diagrams/04-retrieval.svg",
+    cards: [
+      ["#0c8599", "Match", "Question is embedded with the same model and compared to every record by cosine similarity."],
+      ["#e8590c", "Inspect", "The hit carries modality and image path. That is the entire routing signal."],
+      ["#f08c00", "Load", "For a visual hit, read the original image from disk. No pixels, no chart answer."],
+      ["#2f9e44", "Answer", "The VLM reads values directly from the image; the text path answers from text and tables."]
+    ],
+    callout: "k = 4 beats k = 20. More context dilutes attention; retrieve a wide pool, rerank, then send only the top 4."
+  },
+  {
+    id: "generation", n: "05", kicker: "GENERATION", color: "#7048e8",
+    title: "Step 3 — keep routing simple",
+    sub: "No graph framework. Check the metadata, pick a model, answer. Try it below.",
+    img: "diagrams/05-generation-routing.svg",
+    router: true,
+    callout: "The presence of an image path is a perfect proxy for “this question may need pixels”. Routing decides what you send, not which vendor you call."
+  },
+  {
+    id: "end", n: "06", kicker: "END TO END", color: "#2f9e44",
+    title: "Build it in this order",
+    sub: "Each stage is testable on its own, so failures stay local. Do not skip straight to the vision route.",
+    img: "diagrams/06-end-to-end.svg",
+    steps: [
+      ["1", "PDF → text documents", "Print three documents and see real prose", "prove it"],
+      ["2", "Text-only RAG, end to end", "Ask a question the text answers", "prove it"],
+      ["3", "Tables → markdown", "Ask which region is highest", "prove it"],
+      ["4", "Images → VLM summaries", "Ask a question only a figure answers", "prove it"],
+      ["5", "Image path in metadata", "Retrieve the figure and open the file", "prove it"],
+      ["6", "Vision route", "The answer quotes a number only in the chart", "prove it"]
+    ],
+    callout: "If plain text RAG does not work, multimodal will not fix it — it will hide it."
+  }
+];
+
+const nav = document.getElementById("nav");
+const main = document.getElementById("main");
+
+SECTIONS.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.innerHTML = `<span class="n">${s.n}</span><span>${s.kicker.charAt(0) + s.kicker.slice(1).toLowerCase()}</span>`;
+  b.onclick = () => go(i);
+  b.dataset.i = i;
+  nav.appendChild(b);
+});
+
+function render(s) {
+  let html = `
+    <div class="kicker" style="color:${s.color}">${s.kicker}</div>
+    <h1>${s.title}</h1>
+    <p class="sub">${s.sub}</p>
+    <div class="figure" data-src="${s.img}">
+      <img src="${s.img}" alt="${s.title}">
+      <span class="zoom-hint">click to zoom</span>
+    </div>`;
+
+  if (s.steps) {
+    html += `<div class="steps">` + s.steps.map(([n, t, d, tag]) => `
+      <div class="step">
+        <div class="num">${n}</div>
+        <div><div class="t">${t}</div><div class="d">${d}</div></div>
+        <div class="tag">${tag}</div>
+      </div>`).join("") + `</div>`;
+  }
+
+  if (s.router) {
+    html += `
+      <div class="router">
+        <h3>Route simulator</h3>
+        <p class="hint">What did retrieval return?</p>
+        <div class="seg">
+          <button data-mode="text" class="on">text + table only</button>
+          <button data-mode="visual">a visual hit</button>
+        </div>
+        <div class="route-row">
+          <div class="node on" id="ntext">
+            <div class="lbl">route A</div>
+            <div class="nm">Text LLM</div>
+            <div class="ds">text + table context</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="node" id="nvis">
+            <div class="lbl">route B</div>
+            <div class="nm">Vision LLM</div>
+            <div class="ds">context + original images</div>
+          </div>
+        </div>
+        <div class="route-out" id="rout"></div>
+      </div>`;
+  }
+
+  if (s.cards) {
+    html += `<div class="grid${s.cards.length === 4 ? "" : ""}">` + s.cards.map(([c, t, d]) => `
+      <div class="card">
+        <h3><i style="background:${c}"></i>${t}</h3>
+        <p>${d}</p>
+      </div>`).join("") + `</div>`;
+  }
+
+  if (s.callout) {
+    html += `<div class="callout${s.warn ? " warn" : ""}">${s.callout}</div>`;
+  }
+
+  html += `<footer>
+      <span>Multimodal RAG · visual field notes</span>
+      <span>diagram is editable · open the .excalidraw file at excalidraw.com</span>
+    </footer>`;
+
+  main.innerHTML = html;
+
+  main.querySelector(".figure").onclick = e => openLb(e.currentTarget.dataset.src);
+
+  if (s.router) {
+    const set = mode => {
+      const vis = mode === "visual";
+      document.getElementById("ntext").classList.toggle("on", !vis);
+      document.getElementById("nvis").classList.toggle("on", vis);
+      document.querySelectorAll(".seg button").forEach(b => b.classList.toggle("on", b.dataset.mode === mode));
+      document.getElementById("rout").innerHTML = vis
+        ? `<b>Vision path.</b> Load the original image from the hit's path and send it with the context. The answer may quote values that exist only in the chart.`
+        : `<b>Text path.</b> Send text and markdown tables only. Cheaper, and correct whenever the evidence is written down.`;
+    };
+    document.querySelectorAll(".seg button").forEach(b => b.onclick = () => set(b.dataset.mode));
+    set("text");
+  }
+}
+
+let current = 0;
+function go(i) {
+  current = (i + SECTIONS.length) % SECTIONS.length;
+  document.querySelectorAll("nav button").forEach((b, j) => b.classList.toggle("active", j === current));
+  render(SECTIONS[current]);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* lightbox */
+const lb = document.getElementById("lb");
+const lbimg = document.getElementById("lbimg");
+let sc = 1, tx = 0, ty = 0, drag = null;
+
+function apply() {
+  lbimg.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${sc})`;
+}
+function openLb(src) {
+  lbimg.src = src;
+  sc = 1; tx = 0; ty = 0; apply();
+  lb.classList.add("open");
+}
+function closeLb() { lb.classList.remove("open"); lbimg.src = ""; }
+
+document.getElementById("zi").onclick = () => { sc = Math.min(6, sc * 1.25); apply(); };
+document.getElementById("zo").onclick = () => { sc = Math.max(0.4, sc / 1.25); apply(); };
+document.getElementById("zr").onclick = () => { sc = 1; tx = 0; ty = 0; apply(); };
+document.getElementById("zc").onclick = closeLb;
+lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+
+lb.addEventListener("wheel", e => {
+  e.preventDefault();
+  sc = Math.min(6, Math.max(0.4, sc * Math.exp(-e.deltaY * 0.0015)));
+  apply();
+}, { passive: false });
+
+lbimg.addEventListener("mousedown", e => {
+  drag = { x: e.clientX - tx, y: e.clientY - ty };
+  lbimg.classList.add("drag");
+  e.preventDefault();
+});
+window.addEventListener("mousemove", e => {
+  if (!drag) return;
+  tx = e.clientX - drag.x; ty = e.clientY - drag.y; apply();
+});
+window.addEventListener("mouseup", () => { drag = null; lbimg.classList.remove("drag"); });
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeLb();
+  if (lb.classList.contains("open")) return;
+  if (e.key === "ArrowRight") go(current + 1);
+  if (e.key === "ArrowLeft") go(current - 1);
+});
+
+go(0);
+</script>
+</body>
+</html>
