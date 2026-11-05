@@ -91,6 +91,20 @@ One page. Everything. For revision.
 
 ---
 
+## 20-minute revision path
+
+| Minutes | Read | Then say it out loud |
+|---|---|---|
+| 0–3 | `00-overview` + the end-to-end map | "everything becomes text to be found, the original stays to be seen" |
+| 3–6 | `01-the-problem` | "four modalities, text RAG keeps one, and it fails silently" |
+| 6–10 | `02-ingestion` | "extract, normalise, embed, store — summary in, path kept" |
+| 10–12 | `03-vector-store` | "one model, one namespace, modality is metadata" |
+| 12–15 | `04-retrieval` | "match the summary, load the original" |
+| 15–18 | `05-generation` | "any visual in top-k → vision LLM, else text LLM" |
+| 18–20 | `06-end-to-end` | "build text RAG first; vision is step six, not step one" |
+
+---
+
 ## Diagram index
 
 | Step | File |
