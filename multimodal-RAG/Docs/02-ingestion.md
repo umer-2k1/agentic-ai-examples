@@ -8,12 +8,12 @@ Runs **once per document**. Expensive, offline, cacheable.
 
 ## The four steps
 
-| # | Step | Tool | Output |
+| # | Step | What it does | Output |
 |---|---|---|---|
-| 1 | **Extract** | PyMuPDF | text blocks, tables, embedded images |
-| 2 | **Normalise** | LangChain `Document` | one document per modality chunk |
-| 3 | **Embed** | one text embedding model | 384-d vector per document |
-| 4 | **Store** | Pinecone | vector + metadata, one namespace |
+| 1 | **Extract** | pulls text blocks, tables and images out of the PDF | raw pieces |
+| 2 | **Normalise** | turns each piece into a document with a modality and metadata | text / table / visual documents |
+| 3 | **Embed** | one text embedding model, same for every document | 384-d vector each |
+| 4 | **Store** | vector + metadata in Pinecone, one namespace | searchable index |
 
 Everything after step 2 is identical for every modality. That is the point: **normalise early, so the rest of the system only ever sees text**.
 
@@ -21,23 +21,22 @@ Everything after step 2 is identical for every modality. That is the point: **no
 
 ## Step 1 — Extract
 
-```python
-import fitz  # PyMuPDF
+Three extractors, one page at a time.
 
-doc = fitz.open("novacore.pdf")
-
-for pno, page in enumerate(doc, start=1):
-    text   = page.get_text("text")
-    tables = page.find_tables()          # PyMuPDF >= 1.23
-    images = page.get_images(full=True)  # xref ids
-```
+| Target | How | What you get |
+|---|---|---|
+| **Text** | read the page's text layer | paragraphs, headings, notes |
+| **Tables** | table detection on the page | cells + header row |
+| **Images** | embedded image objects | photos, screenshots, raster charts |
 
 | Gotcha | Fix |
 |---|---|
-| Scanned PDF → empty text | run OCR first (`page.get_textpage_ocr()`) |
-| Chart is a **vector** drawing, not an image | `get_images()` misses it — render the page region to PNG, or use a layout model |
-| Multi-column text interleaves | use `get_text("blocks")` and sort by column |
-| Table detection fails on borderless tables | fall back to a VLM page crop |
+| Scanned PDF → empty text layer | run OCR first |
+| Chart is a **vector** drawing, not an embedded image | it will be missed — render the page region to an image instead |
+| Multi-column layouts interleave | extract blocks, then sort by column |
+| Borderless tables are not detected | fall back to a VLM reading a page crop |
+
+> The vector-chart trap is the one that bites. Most financial charts in PDFs are drawn as vector paths, so an "extract embedded images" pass returns nothing and the charts silently disappear from the index.
 
 ---
 
@@ -45,89 +44,59 @@ for pno, page in enumerate(doc, start=1):
 
 ### Text — one chunk per page
 
-```python
-from langchain_core.documents import Document
-
-Document(
-    page_content=page.get_text("text").strip(),
-    metadata={"page": pno, "modality": "text", "source": "novacore.pdf"},
-)
-```
+Keep the page as the unit. A page of prose is already a coherent chunk, and the page number is the citation.
 
 ### Table — markdown, not CSV
 
-```python
-rows = table.extract()
-md = "\n".join("| " + " | ".join(c or "" for c in row) + " |" for row in rows)
+A table is converted to a markdown table: header row, then rows.
 
-Document(
-    page_content=md,
-    metadata={"page": pno, "modality": "table", "table_number": tno},
-)
-```
-
-Markdown keeps the header row attached to the cells. Flattened CSV does not, and the LLM loses the column meaning.
+Markdown keeps the header attached to the cells, so the model still knows what a column means. Flattened CSV loses that, and the answer becomes a word salad.
 
 ### Visual — a VLM writes the summary
 
-```python
-summary = vision_llm.invoke([
-    {"type": "text", "text": "Describe this figure factually. Include every number, "
-                            "axis label and trend. No interpretation."},
-    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
-]).content
+At ingestion time, each image is sent to a vision model with a strict instruction:
 
-Document(
-    page_content=summary,
-    metadata={"page": pno, "modality": "visual", "image_path": "images/p3_chart.png"},
-)
-```
+> Describe this figure factually. Include every number, axis label and trend. No interpretation.
 
-**This summary is the only thing embedded.** The image itself is never vectorised.
+The returned paragraph is the **only thing that gets embedded**. The image itself is never vectorised.
+
+| Do | Don't |
+|---|---|
+| numbers, axis labels, units, trend direction | "a chart about revenue" |
+| one paragraph, 40–120 words | a 600-word essay |
+| "no interpretation" | opinions about why the trend happened |
+
+A vague summary is a retrieval bug you will debug later at query time. Write it well once.
 
 ---
 
 ## The metadata contract
 
-Every document carries these keys. Everything downstream depends on them.
+Every document carries these fields. Everything downstream depends on them.
 
-| Key | Type | Present on | Used for |
+| Field | Type | Present on | Used for |
 |---|---|---|---|
-| `source` | str | all | citation, filtering |
-| `page` | int | all | citation, "page 7" |
-| `modality` | `text \| table \| visual` | all | routing, filtering |
-| `image_path` | str | visual only | reloading the original |
-| `table_number` | int | table only | citation |
+| source | text | all | citation, filtering |
+| page | number | all | citation, "page 7" |
+| modality | text / table / visual | all | routing, filtering |
+| image_path | text | visual only | reloading the original |
+| table_number | number | table only | citation |
 
-> If `modality` or `image_path` is missing, the vision route silently never fires. This is the most common bug in the whole build.
+> If **modality** or **image_path** is missing, the vision route silently never fires. This is the most common bug in the whole build — and it produces no error message.
 
 ---
 
 ## Step 3–4 — Embed and store
 
-```python
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_pinecone import PineconeVectorStore
-
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"   # 384-d, local, free
-)
-
-store = PineconeVectorStore(
-    index_name="multimodal-rag",
-    embedding=embeddings,
-    namespace="novacore",          # one namespace for all modalities
-)
-
-store.add_documents(docs)          # batches of 100
-```
-
 | Choice | Default | Why |
 |---|---|---|
-| Embedding model | `all-MiniLM-L6-v2` (384-d) | free, local, good enough for English |
-| Swap to | `text-embedding-3-small` (1536-d) | better recall, paid, API call per chunk |
-| Namespace | one | the modality lives in metadata, not in the partition |
-| Chunking | page-level for text, one chunk per table, one per visual | structure-aware > fixed-size |
+| Embedding model | all-MiniLM-L6-v2, 384-d | free, local, good enough for English |
+| Alternative | text-embedding-3-small, 1536-d | better recall, paid, one API call per chunk |
+| Namespace | one | modality lives in metadata, not in the partition |
+| Chunking | page for text, one chunk per table, one per visual | structure-aware beats fixed-size |
+| Batch | 100 vectors per upsert | throughput without timeouts |
+
+The same model must embed the documents **and** the questions. Mixing models produces random ranking.
 
 ---
 
@@ -135,22 +104,22 @@ store.add_documents(docs)          # batches of 100
 
 | Item | Per document (≈20 pages, 6 figures) |
 |---|---|
-| PyMuPDF | ~0.2 s |
-| VLM summaries | 6 calls — the dominant cost |
+| PDF parsing | under a second |
+| VLM summaries | 6 calls — **the dominant cost** |
 | Embeddings | ~30 chunks, local, negligible |
-| Upsert | 1 batch |
+| Upsert | one batch |
 
-**Ingestion cost is dominated by the VLM calls.** Cache summaries by image hash; re-ingesting a document should not re-caption the same chart.
+Ingestion cost is dominated by the VLM calls. Cache summaries by image hash: re-ingesting a document must not re-caption the same chart.
 
 ---
 
 ## Checklist
 
-- [ ] text extraction returns non-empty for every page (OCR if not)
+- [ ] every page returns non-empty text (or was OCR'd)
 - [ ] every table becomes markdown with a header row
 - [ ] every image **and vector chart** gets a summary
-- [ ] `image_path` points at a file that still exists at query time
-- [ ] `modality` is set on 100% of documents
+- [ ] image_path points at a file that still exists at query time
+- [ ] modality is set on 100% of documents
 - [ ] counts match: pages ≈ text docs, tables ≈ table docs, figures ≈ visual docs
 
 Next: [vector store →](03-vector-store.md)
