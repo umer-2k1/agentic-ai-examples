@@ -14,3 +14,8 @@ multimodal-RAG/.qdrant/
 
 # os
 .DS_Store
+# runtime data
+multimodal-RAG/data/manifests/
+multimodal-RAG/data/captions/
+multimodal-RAG/data/pdfs/*
+!multimodal-RAG/data/pdfs/.gitkeep
