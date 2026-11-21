@@ -2,6 +2,9 @@
 
 Visual, no-fluff notes for the multimodal RAG build. **Read the diagram first**; the text only adds what a diagram cannot say.
 
+> **Implementation note.** These pages teach the pattern with Pinecone. The actual build uses **Qdrant Cloud** and
+> **OpenRouter**, with HF text embeddings. The build contract lives in [ARCHITECTURE.md](../ARCHITECTURE.md).
+
 > **Mental model**
 > Turn every useful modality into something **searchable** (text).
 > Keep the original **seeable** (pixels).
