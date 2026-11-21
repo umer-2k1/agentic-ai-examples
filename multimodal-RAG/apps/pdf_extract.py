@@ -117,45 +117,61 @@ def _render(page: "fitz.Page", rect: "fitz.Rect", dpi: int) -> bytes:
 
 
 def _detect_tables(page: "fitz.Page") -> list[dict]:
-    """find_tables() fragments bordered HTML tables into one row per table; merge them back."""
-    raw = []
+    """Locate table regions with the 'lines' strategy, then re-read fragmented HTML
+    tables with a clipped 'text' pass so no row is skipped."""
     page_area = page.rect.get_area()
+    frags: list[dict] = []
     try:
-        finder = page.find_tables(strategy="lines")   # bordered tables; fast and stable
+        finder = page.find_tables(strategy="lines")
     except Exception:
         finder = page.find_tables()
     for table in finder.tables:
         bbox = fitz.Rect(table.bbox)
-        if bbox.get_area() > page_area * 0.6:          # bogus whole-page table
+        if bbox.get_area() > page_area * 0.6:
             continue
         rows = table.extract()
         if not rows:
             continue
-        raw.append({"bbox": bbox, "rows": rows})
+        frags.append({"bbox": bbox, "rows": rows})
 
-    # group by horizontal span + column count, then merge rows that are close vertically
-    buckets: dict[tuple, list[dict]] = {}
-    for item in raw:
-        cols = len(item["rows"][0]) if item["rows"] else 0
-        key = (round(item["bbox"].x0), round(item["bbox"].x1), cols)
-        buckets.setdefault(key, []).append(item)
+    # merge fragments that sit in the same column span and are vertically adjacent
+    frags.sort(key=lambda t: (round(t["bbox"].y0, 1), t["bbox"].x0))
+    regions: list[dict] = []
+    for item in frags:
+        if regions:
+            last = regions[-1]
+            cols_a = len(last["rows"][0]) if last["rows"] else 0
+            cols_b = len(item["rows"][0]) if item["rows"] else 0
+            same_width = abs(item["bbox"].x0 - last["bbox"].x0) <= 14 and abs(item["bbox"].x1 - last["bbox"].x1) <= 14
+            adjacent = abs(item["bbox"].y0 - last["bbox"].y1) <= 42
+            if same_width and adjacent and cols_a == cols_b and cols_a >= 2:
+                last["rows"].extend(item["rows"])
+                last["fragments"] += 1
+                a, b = last["bbox"], item["bbox"]
+                last["bbox"] = fitz.Rect(min(a.x0, b.x0), min(a.y0, b.y0), max(a.x1, b.x1), max(a.y1, b.y1))
+                continue
+        regions.append({"bbox": fitz.Rect(item["bbox"]), "rows": list(item["rows"]),
+                        "header": list(item["rows"][0]), "fragments": 1})
 
-    merged: list[dict] = []
-    for items in buckets.values():
-        items.sort(key=lambda t: t["bbox"].y0)
-        current = items[0]
-        for nxt in items[1:]:
-            if nxt["bbox"].y0 - current["bbox"].y1 <= 42:
-                current["rows"].extend(nxt["rows"])
-                a, b = current["bbox"], nxt["bbox"]
-                current["bbox"] = fitz.Rect(min(a.x0, b.x0), min(a.y0, b.y0),
-                                            max(a.x1, b.x1), max(a.y1, b.y1))
-            else:
-                merged.append(current)
-                current = nxt
-        merged.append(current)
-
-    return [m for m in merged if len(m["rows"]) >= 2 and max(len(r) for r in m["rows"]) >= 2]
+    tables: list[dict] = []
+    for region in regions:
+        rows = region["rows"]
+        # many one-row fragments = the table was split by its row borders; re-read the clip
+        if region["fragments"] >= 3 and len(rows) <= region["fragments"] + 1:
+            try:
+                clipped = page.find_tables(clip=region["bbox"], strategy="text").tables
+                best = max(clipped, key=lambda t: len(t.extract()), default=None)
+                if best:
+                    fresh = [r for r in best.extract() if any((c or "").strip() for c in r)]
+                    if len(fresh) > len(rows):
+                        rows = fresh
+                        if len(region["header"]) == len(rows[0]):
+                            rows[0] = region["header"]
+            except Exception:
+                pass
+        if len(rows) >= 2 and max(len(r) for r in rows) >= 2:
+            tables.append({"bbox": region["bbox"], "rows": rows})
+    return tables
 
 
 def _vector_clusters(page: "fitz.Page", table_rects: list["fitz.Rect"]) -> list["fitz.Rect"]:
