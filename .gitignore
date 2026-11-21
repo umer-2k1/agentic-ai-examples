@@ -1,0 +1,16 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# python
+venv/
+__pycache__/
+*.py[cod]
+
+# generated assets / local state
+multimodal-RAG/assets/
+multimodal-RAG/.qdrant/
+
+# os
+.DS_Store
