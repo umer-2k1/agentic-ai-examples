@@ -20,7 +20,7 @@ Success means: a question whose answer lives only in a chart gets answered **and
 |---|---|---|---|
 | Vector DB | **Qdrant Cloud**, existing cluster, collection `multimodal_rag` | one free cluster already exists | a second cluster (not allowed on free tier) |
 | VLM | **OpenRouter**, free vision model, config-driven with fallback | one key, no local GPU | local VLM |
-| Embeddings | **HF Inference API**, `BAAI/bge-small-en-v1.5`, 384-d | no local torch, small install | sentence-transformers, CLIP |
+| Embeddings | **Qdrant Cloud Inference**, `sentence-transformers/all-MiniLM-L6-v2`, 384-d | server-side, no local model and no extra key (HF inference credits returned 402) | HF Inference API, local CLIP |
 | Image representation | **VLM caption → text embedding** (option A) | one vector space, strong on charts | CLIP/SigLIP image vectors |
 | Python | existing repo `venv/` | already provisioned | uv, poetry, new venv |
 | UI | **FastAPI + plain HTML/CSS/JS** | full control, no build step | Streamlit |
@@ -37,7 +37,7 @@ flowchart LR
   A[PDF] --> B[Extract<br/>text · tables · images · vector regions]
   B --> C[Normalise<br/>modality + metadata]
   C --> D[Caption<br/>VLM for visuals]
-  D --> E[Embed<br/>HF bge-small 384d]
+  D --> E[Embed<br/>Qdrant inference 384d]
   E --> F[(Qdrant<br/>collection multimodal_rag)]
   Q[Question] --> G[Embed query]
   G --> H[Search top-k]
@@ -63,7 +63,6 @@ multimodal-RAG/
 │   ├── pdf_extract.py     PyMuPDF: text, tables, images, vector regions
 │   ├── assets.py          storage adapter (local now, S3 later)
 │   ├── caption.py         OpenRouter VLM calls + retries
-│   ├── embeddings.py      HF Inference API, batching, retries
 │   ├── vectorstore.py     Qdrant: ensure collection, upsert, search, delete
 │   ├── ingest.py          orchestration + manifest + status
 │   ├── rag.py             retrieve → select → route → answer
@@ -233,7 +232,8 @@ Rules:
 - Text: one chunk per page. **If a page exceeds 1,500 characters**, split at paragraph boundaries into parts of ≤1,500 chars, all carrying the same page and `part` number. Reason: `bge-small` truncates at 512 tokens; a 4,000-character page would otherwise lose its second half silently.
 - Table: one chunk.
 - Visual: one chunk.
-- Embed `content` only. Modality is never embedded — it is payload.
+- Embed `content` via Qdrant Cloud Inference (the vector is `{text, model}` sent to Qdrant, not computed locally).
+- Modality is never embedded — it is payload.
 
 ---
 
@@ -369,7 +369,7 @@ Create on first ingest (idempotent):
 
 | Method | Path | Purpose |
 |---|---|---|
-| GET | `/api/health` | Qdrant, HF, OpenRouter reachability |
+| GET | `/api/health` | Qdrant reachability + OpenRouter key |
 | POST | `/api/documents` | multipart upload → `{document_id, status}` |
 | POST | `/api/documents/{id}/ingest` | start ingestion (`?force=true` to redo) |
 | GET | `/api/documents` | list with status and counts |
@@ -430,8 +430,8 @@ Visual language follows the Docs: navy `#1F3864`, teal `#2F7D6D`, modality colou
 | `OPENROUTER_API_KEY` | yes | — | |
 | `OPENROUTER_VISION_MODEL` | no | first working free VLM | fallback list in config |
 | `OPENROUTER_TEXT_MODEL` | no | free text model | can equal the vision model |
-| `HF_TOKEN` | yes | — | |
-| `HF_EMBED_MODEL` | no | `BAAI/bge-small-en-v1.5` | 384-d |
+| `EMBED_MODEL` | no | `sentence-transformers/all-MiniLM-L6-v2` | must match the collection |
+| `EMBED_DIM` | no | 384 | validated against the collection |
 | `EMBED_DIM` | no | 384 | validated against the collection |
 | `PAGE_RENDER_DPI` | no | 200 | vector/image crops |
 | `VLM_IMAGE_MAX_PX` | no | 1600 | long edge before sending |
@@ -447,7 +447,7 @@ Startup validation: fail fast with a readable message if a required value is mis
 | Failure | Symptom | Handling |
 |---|---|---|
 | Qdrant unreachable | search 503 | health banner; retry button |
-| HF rate limit | ingestion stalls | backoff, resume from manifest |
+| Qdrant inference error | embedding fails | retry, resume from manifest |
 | OpenRouter rate limit | captions fail | retry, then `caption_status=failed`, doc `partial` |
 | Scanned PDF | no text chunks | flag `ocr_required`; visuals still ingested |
 | Vector clustering merges two figures | one crop with both | acceptable v1; bbox logged for tuning |
@@ -466,7 +466,7 @@ Startup validation: fail fast with a readable message if a required value is mis
 | Qdrant | 1 upsert batch | 1 search |
 | Expected chunks | NovaCore ~24, Siddiqui ~31 | — |
 
-Free-tier assumptions: Qdrant single cluster (already used), OpenRouter free model rate limits, HF monthly inference credit. For two PDFs this is comfortably inside the limits; a 200-page corpus would need a paid embedding tier.
+Free-tier assumptions: Qdrant single cluster (already used) with Cloud Inference token usage, OpenRouter free-model rate limits. For two PDFs this is comfortably inside the limits; a 200-page corpus would need a paid tier.
 
 ---
 
