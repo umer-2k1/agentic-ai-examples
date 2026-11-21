@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multimodal RAG</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="mark">M</div>
+    <div>
+      <div class="title">Multimodal RAG</div>
+      <div class="sub">PDF · text · tables · charts</div>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button data-tab="ingest" class="active">Ingest</button>
+    <button data-tab="search">Search</button>
+    <button data-tab="documents">Documents</button>
+  </nav>
+  <div class="health" id="health"><span class="dot"></span><span id="healthText">checking…</span></div>
+</header>
+
+<main>
+  <!-- ============ INGEST ============ -->
+  <section id="tab-ingest" class="tab active">
+    <div class="page-head">
+      <h1>Add a document</h1>
+      <p>Upload a PDF. Text, tables, embedded images and vector charts are extracted, captioned and indexed.</p>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" accept="application/pdf" hidden>
+      <div class="dz-icon">＋</div>
+      <div class="dz-title">Drop a PDF here</div>
+      <div class="dz-sub">or <button class="link" id="browse">browse files</button> · max 25 MB</div>
+    </div>
+
+    <div class="doc-list" id="docList"></div>
+  </section>
+
+  <!-- ============ SEARCH ============ -->
+  <section id="tab-search" class="tab">
+    <div class="page-head">
+      <h1>Ask the document</h1>
+      <p>Answers are grounded in retrieved evidence. Charts are read by a vision model.</p>
+    </div>
+
+    <form class="searchbar" id="searchForm">
+      <input id="question" type="text" placeholder="What share of Penang electricity came from solar?" autocomplete="off">
+      <button class="primary" type="submit" id="askBtn">Ask</button>
+    </form>
+
+    <div class="controls">
+      <label class="range">top-k <output id="kOut">6</output>
+        <input id="k" type="range" min="3" max="12" value="6">
+      </label>
+      <div class="chips" id="modalityChips">
+        <button class="chip active" data-mod="">all</button>
+        <button class="chip" data-mod="text">text</button>
+        <button class="chip" data-mod="table">table</button>
+        <button class="chip" data-mod="visual">visual</button>
+      </div>
+    </div>
+
+    <div class="answer" id="answer" hidden>
+      <div class="answer-head">
+        <span class="route" id="route">—</span>
+        <div class="sources" id="sources"></div>
+        <button class="link stop" id="stopBtn" hidden>stop</button>
+      </div>
+      <div class="answer-body" id="answerBody"></div>
+    </div>
+
+    <div class="evidence" id="evidence"></div>
+  </section>
+
+  <!-- ============ DOCUMENTS ============ -->
+  <section id="tab-documents" class="tab">
+    <div class="page-head">
+      <h1>Documents</h1>
+      <p>Status, chunk counts and index size per document.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="docs">
+        <thead><tr><th>Document</th><th>Status</th><th>Pages</th><th>Chunks</th><th>Indexed</th><th></th></tr></thead>
+        <tbody id="docsBody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
