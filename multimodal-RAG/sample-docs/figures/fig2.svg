@@ -1,0 +1,21 @@
+<svg viewBox="0 0 350 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#E5E9F0" stroke-width="1">
+            <line x1="38" y1="190" x2="330" y2="190"/><line x1="38" y1="143.6" x2="330" y2="143.6"/>
+            <line x1="38" y1="97.3" x2="330" y2="97.3"/><line x1="38" y1="50.9" x2="330" y2="50.9"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="end">
+            <text x="32" y="193">40</text><text x="32" y="147">70</text><text x="32" y="101">100</text><text x="32" y="54">130</text>
+          </g>
+          <polyline points="38,174.5 67.2,134.4 96.4,117.4 125.6,103.5 154.8,92.6 184,81.8 213.2,72.5 242.4,63.3 271.6,54 300.8,46.3 330,38.5"
+            fill="none" stroke="#1F3864" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#1F3864">
+            <circle cx="38" cy="174.5" r="2.6"/><circle cx="67.2" cy="134.4" r="2.6"/><circle cx="96.4" cy="117.4" r="2.6"/>
+            <circle cx="125.6" cy="103.5" r="2.6"/><circle cx="154.8" cy="92.6" r="2.6"/><circle cx="184" cy="81.8" r="2.6"/>
+            <circle cx="213.2" cy="72.5" r="2.6"/><circle cx="242.4" cy="63.3" r="2.6"/><circle cx="271.6" cy="54" r="2.6"/>
+            <circle cx="300.8" cy="46.3" r="2.6"/><circle cx="330" cy="38.5" r="2.6"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="middle">
+            <text x="38" y="207">0</text><text x="96.4" y="207">2</text><text x="154.8" y="207">4</text>
+            <text x="213.2" y="207">6</text><text x="271.6" y="207">8</text><text x="330" y="207">10 y</text>
+          </g>
+        </svg>

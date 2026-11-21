@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 372" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="900" height="372" rx="6" fill="#EAF1FA"/>
+      <rect x="0" y="296" width="900" height="76" fill="#D8E4D6"/>
+
+      <!-- window -->
+      <rect x="48" y="86" width="150" height="132" rx="3" fill="#CFE3F5" stroke="#B7CFE8"/>
+      <line x1="123" y1="86" x2="123" y2="218" stroke="#B7CFE8" stroke-width="4"/>
+      <line x1="48" y1="152" x2="198" y2="152" stroke="#B7CFE8" stroke-width="4"/>
+      <circle cx="88" cy="118" r="11" fill="#F6D98A"/>
+
+      <!-- growth chart -->
+      <rect x="250" y="74" width="150" height="240" rx="4" fill="#FFFFFF" stroke="#C9D6E8"/>
+      <text x="325" y="92" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280" letter-spacing="1">GROWTH CHART</text>
+      <g stroke="#E3EAF4" stroke-width="1">
+        <line x1="264" y1="140" x2="386" y2="140"/>
+        <line x1="264" y1="186" x2="386" y2="186"/>
+        <line x1="264" y1="232" x2="386" y2="232"/>
+        <line x1="264" y1="278" x2="386" y2="278"/>
+      </g>
+      <polyline points="268,284 292,258 316,228 340,192 364,150 384,112" fill="none" stroke="#1F3864" stroke-width="2.6" stroke-linecap="round"/>
+      <g fill="#1F3864">
+        <circle cx="268" cy="284" r="3"/><circle cx="292" cy="258" r="3"/><circle cx="316" cy="228" r="3"/>
+        <circle cx="340" cy="192" r="3"/><circle cx="364" cy="150" r="3"/>
+      </g>
+      <polyline points="268,292 292,272 316,250 340,224 364,196 384,170" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 3"/>
+
+      <!-- older child -->
+      <g>
+        <circle cx="500" cy="128" r="31" fill="#F0C6A0"/>
+        <path d="M469 124 Q471 90 500 90 Q529 90 531 124 Q519 108 500 108 Q481 108 469 124 Z" fill="#2B2B2B"/>
+        <rect x="491" y="156" width="18" height="14" fill="#E8B892"/>
+        <rect x="462" y="166" width="76" height="84" rx="18" fill="#2F7D6D"/>
+        <rect x="451" y="176" width="16" height="66" rx="8" fill="#F0C6A0"/>
+        <rect x="533" y="176" width="16" height="66" rx="8" fill="#F0C6A0"/>
+        <rect x="464" y="246" width="72" height="38" rx="7" fill="#1F3864"/>
+        <rect x="470" y="280" width="24" height="42" rx="7" fill="#F0C6A0"/>
+        <rect x="506" y="280" width="24" height="42" rx="7" fill="#F0C6A0"/>
+        <rect x="464" y="318" width="34" height="12" rx="5" fill="#3A3A3A"/>
+        <rect x="502" y="318" width="34" height="12" rx="5" fill="#3A3A3A"/>
+      </g>
+
+      <!-- younger child -->
+      <g>
+        <circle cx="650" cy="168" r="25" fill="#F0C6A0"/>
+        <path d="M625 166 Q627 141 650 141 Q673 141 675 166 Q666 152 650 152 Q634 152 625 166 Z" fill="#3A2A22"/>
+        <rect x="643" y="190" width="14" height="10" fill="#E8B892"/>
+        <path d="M618 198 L682 198 L690 262 L610 262 Z" fill="#D97706"/>
+        <rect x="608" y="204" width="14" height="52" rx="7" fill="#F0C6A0"/>
+        <rect x="678" y="204" width="14" height="52" rx="7" fill="#F0C6A0"/>
+        <rect x="622" y="262" width="20" height="46" rx="6" fill="#F0C6A0"/>
+        <rect x="658" y="262" width="20" height="46" rx="6" fill="#F0C6A0"/>
+        <rect x="618" y="304" width="28" height="11" rx="5" fill="#3A3A3A"/>
+        <rect x="654" y="304" width="28" height="11" rx="5" fill="#3A3A3A"/>
+      </g>
+
+      <!-- plant -->
+      <rect x="792" y="250" width="30" height="46" rx="4" fill="#C98A5E"/>
+      <path d="M807 250 Q782 224 787 200 Q807 220 807 250 Z" fill="#4C9A6A"/>
+      <path d="M807 250 Q832 226 828 202 Q808 222 807 250 Z" fill="#3F8A5C"/>
+      <line x1="807" y1="250" x2="807" y2="208" stroke="#3F8A5C" stroke-width="3"/>
+
+      <!-- callouts -->
+      <g>
+        <rect x="26" y="20" width="260" height="50" rx="6" fill="#fff" stroke="#C9D6E8"/>
+        <text x="42" y="40" font-family="Helvetica Neue, Arial" font-size="11.5" font-weight="bold" fill="#1F3864">Riverside Children's Clinic</text>
+        <text x="42" y="58" font-family="Helvetica Neue, Arial" font-size="8" fill="#6b7280">Two siblings · one household · shared guardians</text>
+      </g>
+      <g>
+        <rect x="614" y="20" width="260" height="50" rx="6" fill="#fff" stroke="#C9D6E8"/>
+        <text x="630" y="40" font-family="Helvetica Neue, Arial" font-size="11.5" font-weight="bold" fill="#1F3864">2 children · 65 of 68 doses</text>
+        <text x="630" y="58" font-family="Helvetica Neue, Arial" font-size="8" fill="#6b7280">1 severe allergy · 0 asthma flares in 2026</text>
+      </g>
+
+      <g>
+        <rect x="438" y="336" width="124" height="24" rx="12" fill="#1F3864"/>
+        <text x="500" y="352" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="9" fill="#fff">Ayaan · 10 y</text>
+      </g>
+      <g>
+        <rect x="588" y="340" width="124" height="24" rx="12" fill="#9A5B00"/>
+        <text x="650" y="356" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="9" fill="#fff">Maya · 7 y</text>
+      </g>
+    </svg>

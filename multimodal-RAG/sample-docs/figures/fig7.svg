@@ -1,0 +1,85 @@
+<svg viewBox="0 0 760 330" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- grandparents -->
+    <rect x="55" y="6" width="250" height="46" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="67" y="23" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">MATERNAL GRANDPARENTS</text>
+    <text x="67" y="38" font-family="Helvetica Neue, Arial" font-size="9" fill="#1F3864">Type 2 diabetes · hypertension</text>
+
+    <rect x="455" y="6" width="250" height="46" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="467" y="23" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">PATERNAL GRANDPARENTS</text>
+    <text x="467" y="38" font-family="Helvetica Neue, Arial" font-size="9" fill="#1F3864">Asthma · eczema (grandfather)</text>
+
+    <line x1="180" y1="52" x2="180" y2="80" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="580" y1="52" x2="580" y2="80" stroke="#B9C6DA" stroke-width="1.4"/>
+
+    <!-- parents -->
+    <rect x="90" y="80" width="180" height="48" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="102" y="97" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">MOTHER · 38</text>
+    <text x="102" y="112" font-family="Helvetica Neue, Arial" font-size="10" font-weight="600" fill="#1F3864">Sana Siddiqui</text>
+    <text x="102" y="124" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#6b7280">Allergic rhinitis · primary guardian</text>
+
+    <rect x="490" y="80" width="180" height="48" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="502" y="97" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">FATHER · 41</text>
+    <text x="502" y="112" font-family="Helvetica Neue, Arial" font-size="10" font-weight="600" fill="#1F3864">Rizwan Siddiqui</text>
+    <text x="502" y="124" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#6b7280">Childhood asthma · peanut intolerance</text>
+
+    <!-- marriage + children -->
+    <line x1="270" y1="104" x2="490" y2="104" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="380" y1="104" x2="380" y2="146" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="240" y1="146" x2="520" y2="146" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="240" y1="146" x2="240" y2="160" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="520" y1="146" x2="520" y2="160" stroke="#B9C6DA" stroke-width="1.4"/>
+    
+
+    <!-- children -->
+    <rect x="140" y="160" width="200" height="56" rx="6" fill="#1F3864"/>
+    <text x="152" y="177" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#9FB3CF" letter-spacing=".5">CHILD 1 · RCC-PED-2016-0417</text>
+    <text x="152" y="194" font-family="Helvetica Neue, Arial" font-size="11" font-weight="600" fill="#fff">Ayaan · 10 y</text>
+    <text x="152" y="208" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#C9D6E8">Asthma · peanut allergy · myopia</text>
+
+    <rect x="420" y="160" width="200" height="56" rx="6" fill="#9A5B00"/>
+    <text x="432" y="177" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#F3D9B5" letter-spacing=".5">CHILD 2 · RCC-PED-2019-0892</text>
+    <text x="432" y="194" font-family="Helvetica Neue, Arial" font-size="11" font-weight="600" fill="#fff">Maya · 7 y</text>
+    <text x="432" y="208" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#FBE8C9">Eczema (resolved) · rhinitis · sensitised</text>
+
+    <!-- sibling risk link -->
+    <line x1="340" y1="188" x2="420" y2="188" stroke="#B91C1C" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="380" y="182" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="6.6" fill="#B91C1C">sibling screen</text>
+
+    <!-- care team -->
+    <g stroke="#B9C6DA" stroke-width="1.2">
+      <line x1="240" y1="216" x2="115" y2="252"/>
+      <line x1="240" y1="216" x2="290" y2="252"/>
+      <line x1="520" y1="216" x2="470" y2="252"/>
+      <line x1="520" y1="216" x2="650" y2="252"/>
+      <line x1="240" y1="216" x2="470" y2="262"/>
+    </g>
+
+    <rect x="25" y="252" width="180" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="37" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">ALLERGIST · AYAAN</text>
+    <text x="37" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Marcus Feld</text>
+    <text x="37" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">IgE 12.4 kU/L · annual review</text>
+
+    <rect x="205" y="252" width="170" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="217" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">ASTHMA NURSE · AYAAN</text>
+    <text x="217" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Aisha Bello</text>
+    <text x="217" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">4 reviews / year</text>
+
+    <rect x="375" y="252" width="190" height="54" rx="6" fill="#fff" stroke="#9AA6B8"/>
+    <text x="387" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">PAEDIATRICIAN · BOTH</text>
+    <text x="387" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Hina Qureshi</text>
+    <text x="387" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">19 visits · since 2016</text>
+
+    <rect x="565" y="252" width="170" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="577" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">DERMATOLOGIST · MAYA</text>
+    <text x="577" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Leila Nadeem</text>
+    <text x="577" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">Last review Mar 2024</text>
+
+    <!-- edge labels -->
+    <g font-family="Helvetica Neue, Arial" font-size="6.8" fill="#8a94a6">
+      <text x="150" y="240">1 : N</text>
+      <text x="300" y="240">1 : N</text>
+      <text x="480" y="240">1 : N</text>
+      <text x="600" y="244">1 : N</text>
+      <text x="332" y="270">1 : 2</text>
+    </g>
+  </svg>

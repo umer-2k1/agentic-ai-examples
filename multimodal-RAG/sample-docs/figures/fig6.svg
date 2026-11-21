@@ -1,0 +1,15 @@
+<svg viewBox="0 0 170 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="52" cy="62" r="34" fill="none" stroke="#E8EEF9" stroke-width="10"/>
+        <circle cx="52" cy="62" r="34" fill="none" stroke="#1F3864" stroke-width="10"
+                stroke-dasharray="200.1 213.6" stroke-linecap="round" transform="rotate(-90 52 62)"/>
+        <text x="52" y="61" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="14" font-weight="600" fill="#1F3864">94%</text>
+        <text x="52" y="75" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280">Ayaan</text>
+        <text x="52" y="112" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280">34 / 36</text>
+
+        <circle cx="122" cy="62" r="34" fill="none" stroke="#E8EEF9" stroke-width="10"/>
+        <circle cx="122" cy="62" r="34" fill="none" stroke="#D97706" stroke-width="10"
+                stroke-dasharray="207.6 213.6" stroke-linecap="round" transform="rotate(-90 122 62)"/>
+        <text x="122" y="61" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="14" font-weight="600" fill="#9A5B00">97%</text>
+        <text x="122" y="75" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280">Maya</text>
+        <text x="122" y="112" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280">31 / 32</text>
+      </svg>

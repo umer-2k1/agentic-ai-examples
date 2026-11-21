@@ -1,0 +1,28 @@
+<svg viewBox="0 0 460 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#E5E9F0" stroke-width="1">
+          <line x1="42" y1="146" x2="446" y2="146"/><line x1="42" y1="112" x2="446" y2="112"/>
+          <line x1="42" y1="78" x2="446" y2="78"/><line x1="42" y1="44" x2="446" y2="44"/>
+        </g>
+        <g font-family="Helvetica Neue, Arial" font-size="9" fill="#6b7280" text-anchor="end">
+          <text x="36" y="149">0</text><text x="36" y="115">2</text><text x="36" y="81">4</text><text x="36" y="47">6</text>
+        </g>
+        <g fill="#1F3864">
+          <rect x="52"  y="44"  width="26" height="102" rx="2"/>
+          <rect x="88"  y="61"  width="26" height="85"  rx="2"/>
+          <rect x="124" y="78"  width="26" height="68"  rx="2"/>
+          <rect x="160" y="95"  width="26" height="51"  rx="2"/>
+          <rect x="196" y="112" width="26" height="34"  rx="2"/>
+          <rect x="232" y="112" width="26" height="34"  rx="2"/>
+          <rect x="268" y="129" width="26" height="17"  rx="2"/>
+          <rect x="304" y="129" width="26" height="17"  rx="2"/>
+          <rect x="340" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+          <rect x="376" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+          <rect x="412" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+        </g>
+        <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="middle">
+          <text x="65" y="162">Jan</text><text x="101" y="162">Feb</text><text x="137" y="162">Mar</text>
+          <text x="173" y="162">Apr</text><text x="209" y="162">May</text><text x="245" y="162">Jun</text>
+          <text x="281" y="162">Jul</text><text x="317" y="162">Aug</text><text x="353" y="162">Sep</text>
+          <text x="389" y="162">Oct</text><text x="425" y="162">Nov</text>
+        </g>
+      </svg>
