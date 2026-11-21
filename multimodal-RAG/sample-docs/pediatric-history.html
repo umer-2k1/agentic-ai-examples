@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Siddiqui Children — Pediatric Medical History 2016–2026</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333; font-size: 9.6pt; line-height: 1.55;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; padding: 16mm 16mm 13mm;
+    position: relative; overflow: hidden; page-break-after: always; background: #fff;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .sec { font-size: 23pt; font-weight: 500; color: #1F3864; letter-spacing: -.4px; margin: 0; }
+  .sec-sub { font-size: 8.6pt; color: #7a7a7a; margin: 2px 0 0; }
+  .rule { border: 0; border-top: .7pt solid #D0D5DD; margin: 9px 0 13px; }
+
+  p { margin: 0 0 9px; }
+  .body { margin-top: 12px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+  thead th { background: #1F3864; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+  tbody td { padding: 5.6px 8px; border-bottom: .6pt solid #D9E2F3; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #F3F6FB; }
+  td.num, th.num { text-align: right; }
+  .tbl-tight tbody td { padding: 4.4px 8px; }
+  .tag-ayaan { color: #1F3864; font-weight: 600; }
+  .tag-maya { color: #9A5B00; font-weight: 600; }
+
+  figure { margin: 12px 0 0; }
+  figcaption { font-size: 8.1pt; color: #666; margin-top: 6px; line-height: 1.45; }
+  .chart-title { font-size: 10pt; font-weight: 600; color: #1F3864; margin: 2px 0 6px; }
+  svg { display: block; }
+
+  .callout { background: #E9F5EF; border: .8pt solid #B7DCCB; border-radius: 5px;
+    padding: 9px 13px; margin: 12px 0 0; font-size: 8.7pt; color: #21543F; }
+  .callout b { color: #1B4A36; }
+
+  .foot { position: absolute; left: 16mm; right: 16mm; bottom: 7mm;
+    display: flex; justify-content: space-between; font-size: 7.4pt; color: #8a8a8a; }
+
+  .cover { padding-top: 24mm; text-align: center; }
+  .cover .eyebrow { font-size: 8.4pt; letter-spacing: .22em; color: #2F7D6D; font-weight: 600; }
+  .cover h1 { font-size: 29pt; color: #1F3864; margin: 12px 0 6px; font-weight: 500; letter-spacing: -.5px; }
+  .cover h2 { font-size: 15.5pt; color: #1F3864; margin: 0 0 10px; font-weight: 400; line-height: 1.35; }
+  .cover .tagline { font-size: 9.4pt; color: #6b7280; margin-bottom: 14px; }
+  .cover .hero { margin: 0 auto 14px; width: 100%; }
+  .cover table { font-size: 8.2pt; }
+  .cover tbody td { padding: 6px 9px; }
+  .cover td.k { width: 16%; color: #4b5563; background: #EEF3FA; border-bottom: .6pt solid #fff; }
+  .demo-note { font-size: 7.9pt; color: #7a7a7a; margin-top: 12px; line-height: 1.5; text-align: left; }
+
+  .two-col { display: flex; gap: 8mm; align-items: flex-start; }
+  .col-50 { width: 50%; } .col-55 { width: 55%; } .col-45 { width: 45%; }
+  .col-60 { width: 60%; } .col-40 { width: 40%; } .col-62 { width: 62%; } .col-38 { width: 38%; }
+  .col-64 { width: 64%; } .col-36 { width: 36%; }
+
+  .mil { margin-top: 4px; }
+  .mil-row { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .mil-name { width: 82px; font-size: 8.3pt; color: #333; }
+  .mil-bars { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .mil-bar { height: 7px; background: #E8EEF9; border-radius: 4px; overflow: hidden; }
+  .mil-fill { height: 100%; border-radius: 4px; }
+  .mil-val { width: 58px; text-align: right; font-size: 7.6pt; color: #6b7280; }
+
+  .kpi-strip { display: flex; gap: 6px; margin: 4px 0 12px; }
+  .kpi { flex: 1; background: #F3F6FB; border: .6pt solid #DCE4F2; border-radius: 5px; padding: 7px 9px; }
+  .kpi .v { font-size: 13pt; color: #1F3864; font-weight: 600; line-height: 1.1; }
+  .kpi .l { font-size: 7.2pt; color: #6b7280; margin-top: 2px; }
+
+  ul.checks { margin: 6px 0 0 0; padding-left: 15px; }
+  ul.checks li { margin-bottom: 4px; font-size: 8.7pt; }
+
+  .legend { display: flex; gap: 14px; font-size: 7.8pt; color: #6b7280; margin-top: 4px; }
+  .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ PAGE 1 -->
+<section class="page cover">
+  <div class="eyebrow">RIVERSIDE CHILDREN'S CLINIC</div>
+  <h1>THE SIDDIQUI CHILDREN</h1>
+  <h2>FAMILY PEDIATRIC HEALTH RECORD<br>2016 – 2026</h2>
+  <div class="tagline">A realistic fictional family health record designed for multimodal RAG testing</div>
+
+  <div class="hero">
+    <svg viewBox="0 0 900 372" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="900" height="372" rx="6" fill="#EAF1FA"/>
+      <rect x="0" y="296" width="900" height="76" fill="#D8E4D6"/>
+
+      <!-- window -->
+      <rect x="48" y="86" width="150" height="132" rx="3" fill="#CFE3F5" stroke="#B7CFE8"/>
+      <line x1="123" y1="86" x2="123" y2="218" stroke="#B7CFE8" stroke-width="4"/>
+      <line x1="48" y1="152" x2="198" y2="152" stroke="#B7CFE8" stroke-width="4"/>
+      <circle cx="88" cy="118" r="11" fill="#F6D98A"/>
+
+      <!-- growth chart -->
+      <rect x="250" y="74" width="150" height="240" rx="4" fill="#FFFFFF" stroke="#C9D6E8"/>
+      <text x="325" y="92" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280" letter-spacing="1">GROWTH CHART</text>
+      <g stroke="#E3EAF4" stroke-width="1">
+        <line x1="264" y1="140" x2="386" y2="140"/>
+        <line x1="264" y1="186" x2="386" y2="186"/>
+        <line x1="264" y1="232" x2="386" y2="232"/>
+        <line x1="264" y1="278" x2="386" y2="278"/>
+      </g>
+      <polyline points="268,284 292,258 316,228 340,192 364,150 384,112" fill="none" stroke="#1F3864" stroke-width="2.6" stroke-linecap="round"/>
+      <g fill="#1F3864">
+        <circle cx="268" cy="284" r="3"/><circle cx="292" cy="258" r="3"/><circle cx="316" cy="228" r="3"/>
+        <circle cx="340" cy="192" r="3"/><circle cx="364" cy="150" r="3"/>
+      </g>
+      <polyline points="268,292 292,272 316,250 340,224 364,196 384,170" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="4 3"/>
+
+      <!-- older child -->
+      <g>
+        <circle cx="500" cy="128" r="31" fill="#F0C6A0"/>
+        <path d="M469 124 Q471 90 500 90 Q529 90 531 124 Q519 108 500 108 Q481 108 469 124 Z" fill="#2B2B2B"/>
+        <rect x="491" y="156" width="18" height="14" fill="#E8B892"/>
+        <rect x="462" y="166" width="76" height="84" rx="18" fill="#2F7D6D"/>
+        <rect x="451" y="176" width="16" height="66" rx="8" fill="#F0C6A0"/>
+        <rect x="533" y="176" width="16" height="66" rx="8" fill="#F0C6A0"/>
+        <rect x="464" y="246" width="72" height="38" rx="7" fill="#1F3864"/>
+        <rect x="470" y="280" width="24" height="42" rx="7" fill="#F0C6A0"/>
+        <rect x="506" y="280" width="24" height="42" rx="7" fill="#F0C6A0"/>
+        <rect x="464" y="318" width="34" height="12" rx="5" fill="#3A3A3A"/>
+        <rect x="502" y="318" width="34" height="12" rx="5" fill="#3A3A3A"/>
+      </g>
+
+      <!-- younger child -->
+      <g>
+        <circle cx="650" cy="168" r="25" fill="#F0C6A0"/>
+        <path d="M625 166 Q627 141 650 141 Q673 141 675 166 Q666 152 650 152 Q634 152 625 166 Z" fill="#3A2A22"/>
+        <rect x="643" y="190" width="14" height="10" fill="#E8B892"/>
+        <path d="M618 198 L682 198 L690 262 L610 262 Z" fill="#D97706"/>
+        <rect x="608" y="204" width="14" height="52" rx="7" fill="#F0C6A0"/>
+        <rect x="678" y="204" width="14" height="52" rx="7" fill="#F0C6A0"/>
+        <rect x="622" y="262" width="20" height="46" rx="6" fill="#F0C6A0"/>
+        <rect x="658" y="262" width="20" height="46" rx="6" fill="#F0C6A0"/>
+        <rect x="618" y="304" width="28" height="11" rx="5" fill="#3A3A3A"/>
+        <rect x="654" y="304" width="28" height="11" rx="5" fill="#3A3A3A"/>
+      </g>
+
+      <!-- plant -->
+      <rect x="792" y="250" width="30" height="46" rx="4" fill="#C98A5E"/>
+      <path d="M807 250 Q782 224 787 200 Q807 220 807 250 Z" fill="#4C9A6A"/>
+      <path d="M807 250 Q832 226 828 202 Q808 222 807 250 Z" fill="#3F8A5C"/>
+      <line x1="807" y1="250" x2="807" y2="208" stroke="#3F8A5C" stroke-width="3"/>
+
+      <!-- callouts -->
+      <g>
+        <rect x="26" y="20" width="260" height="50" rx="6" fill="#fff" stroke="#C9D6E8"/>
+        <text x="42" y="40" font-family="Helvetica Neue, Arial" font-size="11.5" font-weight="bold" fill="#1F3864">Riverside Children's Clinic</text>
+        <text x="42" y="58" font-family="Helvetica Neue, Arial" font-size="8" fill="#6b7280">Two siblings · one household · shared guardians</text>
+      </g>
+      <g>
+        <rect x="614" y="20" width="260" height="50" rx="6" fill="#fff" stroke="#C9D6E8"/>
+        <text x="630" y="40" font-family="Helvetica Neue, Arial" font-size="11.5" font-weight="bold" fill="#1F3864">2 children · 65 of 68 doses</text>
+        <text x="630" y="58" font-family="Helvetica Neue, Arial" font-size="8" fill="#6b7280">1 severe allergy · 0 asthma flares in 2026</text>
+      </g>
+
+      <g>
+        <rect x="438" y="336" width="124" height="24" rx="12" fill="#1F3864"/>
+        <text x="500" y="352" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="9" fill="#fff">Ayaan · 10 y</text>
+      </g>
+      <g>
+        <rect x="588" y="340" width="124" height="24" rx="12" fill="#9A5B00"/>
+        <text x="650" y="356" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="9" fill="#fff">Maya · 7 y</text>
+      </g>
+    </svg>
+  </div>
+
+  <table>
+    <tbody>
+      <tr><td class="k">Children</td><td>Ayaan (10 y) · Maya (7 y)</td><td class="k">Date of birth</td><td>14 Mar 2016 · 22 Jul 2019</td></tr>
+      <tr><td class="k">Sex</td><td>Male · Female</td><td class="k">Blood group</td><td>O positive · A positive</td></tr>
+      <tr><td class="k">Guardians</td><td>Sana &amp; Rizwan Siddiqui</td><td class="k">Record IDs</td><td style="line-height:1.4">RCC-PED-2016-0417<br>RCC-PED-2019-0892</td></tr>
+    </tbody>
+  </table>
+
+  <p class="demo-note"><b>Demo note.</b> All names, dates, measurements, clinicians and events in this record are fictional. The
+  document intentionally mixes narrative text, tables, charts and relationship diagrams so it can be used to demonstrate
+  multimodal retrieval, grounded question answering and cross-record reasoning.</p>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 1</span></div>
+</section>
+
+<!-- ============================================================ PAGE 2 -->
+<section class="page">
+  <h1 class="sec">1. Family Health Overview</h1>
+  <p class="sec-sub">Narrative text section — one household, two different clinical trajectories</p>
+  <hr class="rule">
+
+  <p>The Siddiqui household has two children. <b>Ayaan</b>, 10, has mild persistent asthma, an IgE-mediated peanut
+  allergy, allergic rhinitis and myopia; his iron-deficiency anaemia resolved in 2022. <b>Maya</b>, 7, has a history of
+  atopic dermatitis that cleared in 2024, seasonal rhinitis, and peanut <i>sensitisation</i> without clinical allergy.
+  Both attend school full-time and live with their parents in Karachi.</p>
+
+  <p>2026 was a stable year for both children. Ayaan had no asthma exacerbation and no rescue-inhaler use after August.
+  Maya had no eczema flare lasting more than two weeks and no allergic reaction; her peanut-specific IgE remains low at
+  0.8 kU/L, which is why she carries no adrenaline auto-injector. The household keeps one shared allergy plan and two
+  auto-injectors for Ayaan — one at home, one at school.</p>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="v">2</div><div class="l">CHILDREN IN THE RECORD</div></div>
+    <div class="kpi"><div class="v">65/68</div><div class="l">IMMUNISATION DOSES</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">ASTHMA EXACERBATIONS, 2026</div></div>
+    <div class="kpi"><div class="v">1</div><div class="l">SEVERE ALLERGY (AYAAN)</div></div>
+  </div>
+
+  <h3 class="chart-title" style="margin-top:4px">2026 Priorities</h3>
+  <table class="tbl-tight">
+    <thead><tr><th style="width:12%">Child</th><th style="width:26%">Priority</th><th style="width:32%">2026 target</th><th>Year-end status</th></tr></thead>
+    <tbody>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Asthma control</td><td>0 exacerbations; &le;2 rescue days/week</td><td>Achieved: 0 exacerbations; 0 rescue days in Q3</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Immunisation</td><td>HPV and influenza on schedule</td><td>In progress: 34/36; HPV dose 1 due November</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Eczema control</td><td>No flare longer than 2 weeks</td><td>Achieved: none since March</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Allergy monitoring</td><td>Annual IgE; no clinical reaction</td><td>Achieved: IgE 0.8 kU/L; no reaction</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Vision screening</td><td>Annual school screening</td><td>Achieved: 6/6 both eyes; review 2027</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="chart-title" style="margin-top:14px">Family history</h3>
+  <table class="tbl-tight">
+    <thead><tr><th style="width:24%">Relative</th><th style="width:38%">Condition</th><th>Relevance to the children</th></tr></thead>
+    <tbody>
+      <tr><td>Father, 41</td><td>Childhood asthma (resolved at 14); peanut intolerance</td><td>Explains Ayaan's atopic and asthma pattern</td></tr>
+      <tr><td>Mother, 38</td><td>Allergic rhinitis</td><td>Both children have seasonal rhinitis</td></tr>
+      <tr><td>Paternal grandfather</td><td>Asthma, eczema</td><td>Second-degree atopic history</td></tr>
+      <tr><td>Maternal grandmother</td><td>Type 2 diabetes</td><td>Household nutrition monitoring only</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><b>Cross-modal clue.</b> The exact immunisation gap appears in the comparison table on page 7, while
+  the shared guardians, the two sibling records and the inherited atopic pattern appear in the relationship map on page 8.</div>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 2</span></div>
+</section>
+
+<!-- ============================================================ PAGE 3 -->
+<section class="page">
+  <h1 class="sec">2. Growth &amp; Anthropometrics</h1>
+  <p class="sec-sub">Comparison table + one height chart per child</p>
+  <hr class="rule">
+
+  <table class="tbl-tight">
+    <thead>
+      <tr><th>Child</th><th>Age</th><th class="num">Height (cm)</th><th class="num">Height %ile</th>
+          <th class="num">Weight (kg)</th><th class="num">Weight %ile</th><th class="num">BMI</th><th class="num">BMI %ile</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Birth</td><td class="num">50.0</td><td class="num">50th</td><td class="num">3.4</td><td class="num">45th</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>4 y</td><td class="num">103.0</td><td class="num">58th</td><td class="num">16.0</td><td class="num">52nd</td><td class="num">15.1</td><td class="num">55th</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>7 y</td><td class="num">122.0</td><td class="num">58th</td><td class="num">22.5</td><td class="num">48th</td><td class="num">15.1</td><td class="num">45th</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>10 y</td><td class="num">138.0</td><td class="num">55th</td><td class="num">30.5</td><td class="num">45th</td><td class="num">16.0</td><td class="num">40th</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Birth</td><td class="num">49.0</td><td class="num">45th</td><td class="num">3.1</td><td class="num">40th</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>2 y</td><td class="num">85.0</td><td class="num">50th</td><td class="num">11.8</td><td class="num">45th</td><td class="num">16.3</td><td class="num">55th</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>5 y</td><td class="num">108.0</td><td class="num">52nd</td><td class="num">17.4</td><td class="num">48th</td><td class="num">14.9</td><td class="num">45th</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>7 y</td><td class="num">120.0</td><td class="num">50th</td><td class="num">21.5</td><td class="num">46th</td><td class="num">14.9</td><td class="num">42nd</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="two-col" style="gap:6mm">
+      <div class="col-50">
+        <div class="chart-title" style="font-size:9pt">Ayaan · height 55th percentile</div>
+        <svg viewBox="0 0 350 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#E5E9F0" stroke-width="1">
+            <line x1="38" y1="190" x2="330" y2="190"/><line x1="38" y1="143.6" x2="330" y2="143.6"/>
+            <line x1="38" y1="97.3" x2="330" y2="97.3"/><line x1="38" y1="50.9" x2="330" y2="50.9"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="end">
+            <text x="32" y="193">40</text><text x="32" y="147">70</text><text x="32" y="101">100</text><text x="32" y="54">130</text>
+          </g>
+          <polyline points="38,174.5 67.2,134.4 96.4,117.4 125.6,103.5 154.8,92.6 184,81.8 213.2,72.5 242.4,63.3 271.6,54 300.8,46.3 330,38.5"
+            fill="none" stroke="#1F3864" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#1F3864">
+            <circle cx="38" cy="174.5" r="2.6"/><circle cx="67.2" cy="134.4" r="2.6"/><circle cx="96.4" cy="117.4" r="2.6"/>
+            <circle cx="125.6" cy="103.5" r="2.6"/><circle cx="154.8" cy="92.6" r="2.6"/><circle cx="184" cy="81.8" r="2.6"/>
+            <circle cx="213.2" cy="72.5" r="2.6"/><circle cx="242.4" cy="63.3" r="2.6"/><circle cx="271.6" cy="54" r="2.6"/>
+            <circle cx="300.8" cy="46.3" r="2.6"/><circle cx="330" cy="38.5" r="2.6"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="middle">
+            <text x="38" y="207">0</text><text x="96.4" y="207">2</text><text x="154.8" y="207">4</text>
+            <text x="213.2" y="207">6</text><text x="271.6" y="207">8</text><text x="330" y="207">10 y</text>
+          </g>
+        </svg>
+      </div>
+      <div class="col-50">
+        <div class="chart-title" style="font-size:9pt">Maya · height 50th percentile</div>
+        <svg viewBox="0 0 350 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#E5E9F0" stroke-width="1">
+            <line x1="38" y1="190" x2="330" y2="190"/><line x1="38" y1="143.6" x2="330" y2="143.6"/>
+            <line x1="38" y1="97.3" x2="330" y2="97.3"/><line x1="38" y1="50.9" x2="330" y2="50.9"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="end">
+            <text x="32" y="193">40</text><text x="32" y="147">70</text><text x="32" y="101">100</text><text x="32" y="54">130</text>
+          </g>
+          <polyline points="38,176.1 79.7,137.5 121.4,120.5 163.1,106.5 204.8,95.7 246.5,84.9 288.2,77.1 330,66.4"
+            fill="none" stroke="#D97706" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#D97706">
+            <circle cx="38" cy="176.1" r="2.6"/><circle cx="79.7" cy="137.5" r="2.6"/><circle cx="121.4" cy="120.5" r="2.6"/>
+            <circle cx="163.1" cy="106.5" r="2.6"/><circle cx="204.8" cy="95.7" r="2.6"/><circle cx="246.5" cy="84.9" r="2.6"/>
+            <circle cx="288.2" cy="77.1" r="2.6"/><circle cx="330" cy="66.4" r="2.6"/>
+          </g>
+          <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="middle">
+            <text x="38" y="207">0</text><text x="121.4" y="207">2</text><text x="204.8" y="207">4</text>
+            <text x="288.2" y="207">6</text><text x="330" y="207">7 y</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <figcaption>Figure 1. Height by age. Ayaan tracks the 55th percentile and Maya the 50th. Ayaan's weight curve flattened
+    between ages 4 and 6, then recovered after iron treatment; Maya's growth has been linear since birth.</figcaption>
+  </figure>
+
+  <p class="body">Both children remain within the 40th–60th percentile band for height, weight and BMI. Ayaan's BMI is
+  16.0 (40th percentile) and Maya's is 14.9 (42nd) — healthy for age. The only growth flag is Ayaan's weight between ages
+  four and six, which coincided with the iron-deficiency diagnosis on page 5 and resolved within two months of
+  treatment. Maya's weight gain has averaged 2.6 kg per year since age five, with no percentile crossing.</p>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 3</span></div>
+</section>
+
+<!-- ============================================================ PAGE 4 -->
+<section class="page">
+  <h1 class="sec">3. Developmental Milestones</h1>
+  <p class="sec-sub">Sibling comparison table + attainment by domain</p>
+  <hr class="rule">
+
+  <table class="tbl-tight">
+    <thead><tr><th style="width:15%">Domain</th><th style="width:28%">Milestone</th><th style="width:12%">Expected</th><th style="width:15%">Ayaan</th><th style="width:15%">Maya</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Gross motor</td><td>Walks independently</td><td>12–15 mo</td><td>12 mo</td><td>13 mo</td><td>On time</td></tr>
+      <tr><td>Fine motor</td><td>Mature pencil grip</td><td>4–5 y</td><td>4 y 6 mo</td><td>4 y 2 mo</td><td>On time</td></tr>
+      <tr><td>Language</td><td>50+ words, two-word phrases</td><td>18–24 mo</td><td>24 mo</td><td>20 mo</td><td>Ayaan: delay</td></tr>
+      <tr><td>Language</td><td>Fluent sentences</td><td>3 y</td><td>3 y 2 mo</td><td>2 y 9 mo</td><td>Resolved</td></tr>
+      <tr><td>Social</td><td>Cooperative play</td><td>3–4 y</td><td>3 y 6 mo</td><td>3 y 4 mo</td><td>On time</td></tr>
+      <tr><td>Cognitive</td><td>Reads simple sentences</td><td>6–7 y</td><td>6 y 4 mo</td><td>5 y 10 mo</td><td>On time</td></tr>
+      <tr><td>Self-care</td><td>Ties shoelaces</td><td>5–6 y</td><td>5 y 9 mo</td><td>5 y 3 mo</td><td>On time</td></tr>
+    </tbody>
+  </table>
+
+  <div class="two-col" style="margin-top:14px">
+    <div class="col-55">
+      <div class="chart-title">Attainment by domain</div>
+      <div class="legend"><span><i style="background:#1F3864"></i>Ayaan</span><span><i style="background:#D97706"></i>Maya</span></div>
+      <div class="mil">
+        <div class="mil-row"><div class="mil-name">Gross motor</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">8/8 · 8/8</div></div>
+        <div class="mil-row"><div class="mil-name">Fine motor</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">8/8 · 8/8</div></div>
+        <div class="mil-row"><div class="mil-name">Language</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:88%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">7/8 · 8/8</div></div>
+        <div class="mil-row"><div class="mil-name">Social</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">8/8 · 8/8</div></div>
+        <div class="mil-row"><div class="mil-name">Cognitive</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">8/8 · 8/8</div></div>
+        <div class="mil-row"><div class="mil-name">Self-care</div><div class="mil-bars">
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#1F3864"></div></div>
+          <div class="mil-bar"><div class="mil-fill" style="width:100%;background:#D97706"></div></div></div><div class="mil-val">6/6 · 6/6</div></div>
+      </div>
+    </div>
+    <div class="col-45">
+      <div style="background:#F5F7FB;border-left:3px solid #2F7D6D;padding:9px 11px;font-size:8.4pt;color:#3b4453">
+        <b style="color:#1F3864">Sibling difference</b><br>
+        Ayaan's expressive language trailed at 18–24 months (fewer than 20 words, no two-word combinations) and resolved
+        by 3 y 2 mo without intervention. Maya reached the same milestones roughly four months earlier and was reading
+        simple sentences at 5 y 10 mo.
+      </div>
+      <div style="margin-top:9px;font-size:8.3pt;color:#6b7280">
+        Both children were reviewed at the 2026 well-child visit. School reports grade-level reading and age-typical
+        social participation for each child.
+      </div>
+    </div>
+  </div>
+
+  <p class="body">All domains are age-appropriate for both children at the 2026 review. Maya's early reading is a
+  strength, not an outlier requiring assessment. Ayaan's language history is documented because it explains the
+  speech-therapy referral that was considered and then cancelled at age three; no ongoing support is in place.</p>
+
+  <div class="callout"><b>Cross-modal clue.</b> Ayaan's myopia appears in the condition timeline on page 5 and the
+  spectacle prescription on page 6; Maya's vision screening result appears only in the priorities table on page 2.</div>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 4</span></div>
+</section>
+
+<!-- ============================================================ PAGE 5 -->
+<section class="page">
+  <h1 class="sec">4. Diagnoses &amp; Conditions</h1>
+  <p class="sec-sub">Problem list for both children + shared condition timeline</p>
+  <hr class="rule">
+
+  <table class="tbl-tight">
+    <thead><tr><th style="width:10%">Child</th><th style="width:23%">Condition</th><th style="width:12%">Diagnosed</th><th style="width:14%">Status</th><th>Current management</th></tr></thead>
+    <tbody>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Peanut allergy (IgE-mediated)</td><td>Mar 2018</td><td>Active</td><td>Strict avoidance; adrenaline auto-injector</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Mild persistent asthma</td><td>Jun 2019</td><td>Active, controlled</td><td>ICS 50 &micro;g twice daily; salbutamol PRN</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Allergic rhinitis</td><td>Apr 2020</td><td>Active, seasonal</td><td>Cetirizine; nasal saline</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Iron-deficiency anaemia</td><td>Feb 2021</td><td>Resolved 2022</td><td>Ferrous sulfate for 6 months</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Myopia</td><td>Sep 2023</td><td>Active</td><td>Spectacles −1.25 D</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Atopic dermatitis</td><td>Jan 2020</td><td>Resolved 2024</td><td>Emollients; no active treatment</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Allergic rhinitis</td><td>Mar 2023</td><td>Active, seasonal</td><td>Cetirizine in season</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Peanut sensitisation</td><td>Nov 2023</td><td>Active, monitored</td><td>No avoidance; annual IgE; no AAI</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="chart-title" style="margin-top:14px">Condition timeline, 2016–2026</div>
+    <svg viewBox="0 0 720 250" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <line x1="150" y1="216" x2="700" y2="216" stroke="#C9D2E0"/>
+      <g font-family="Helvetica Neue, Arial" font-size="9" fill="#6b7280" text-anchor="middle">
+        <text x="150" y="234">2016</text><text x="260" y="234">2018</text><text x="370" y="234">2020</text>
+        <text x="480" y="234">2022</text><text x="590" y="234">2024</text><text x="700" y="234">2026</text>
+      </g>
+      <g stroke="#EDF1F7" stroke-width="1">
+        <line x1="260" y1="18" x2="260" y2="216"/><line x1="370" y1="18" x2="370" y2="216"/>
+        <line x1="480" y1="18" x2="480" y2="216"/><line x1="590" y1="18" x2="590" y2="216"/>
+      </g>
+
+      <g font-family="Helvetica Neue, Arial" font-size="8.6" fill="#3b4453" text-anchor="end">
+        <text x="140" y="35">Peanut allergy</text>
+        <text x="140" y="59">Asthma</text>
+        <text x="140" y="83">Rhinitis (Ayaan)</text>
+        <text x="140" y="107">Anaemia</text>
+        <text x="140" y="131">Myopia</text>
+        <text x="140" y="155">Eczema (Maya)</text>
+        <text x="140" y="179">Rhinitis (Maya)</text>
+        <text x="140" y="203">Peanut sensitisation</text>
+      </g>
+
+      <rect x="260" y="24" width="440" height="14" rx="7" fill="#B91C1C" opacity=".82"/>
+      <rect x="315" y="48" width="385" height="14" rx="7" fill="#3B6FB6" opacity=".85"/>
+      <rect x="370" y="72" width="330" height="14" rx="7" fill="#3B6FB6" opacity=".6"/>
+      <rect x="425" y="96" width="55" height="14" rx="7" fill="#D97706" opacity=".9"/>
+      <rect x="535" y="120" width="165" height="14" rx="7" fill="#6B4E9B" opacity=".85"/>
+      <rect x="370" y="144" width="220" height="14" rx="7" fill="#4C9A6A" opacity=".85"/>
+      <rect x="535" y="168" width="165" height="14" rx="7" fill="#4C9A6A" opacity=".6"/>
+      <rect x="535" y="192" width="165" height="14" rx="7" fill="#D97706" opacity=".65"/>
+
+      <g font-family="Helvetica Neue, Arial" font-size="7.5" fill="#ffffff">
+        <text x="270" y="35">2018 → ongoing</text>
+        <text x="325" y="59">2019 → ongoing</text>
+        <text x="438" y="107">2021–22</text>
+        <text x="545" y="131">2023 → ongoing</text>
+        <text x="380" y="155">2020–24</text>
+      </g>
+      <g font-family="Helvetica Neue, Arial" font-size="7.5" fill="#1F3864">
+        <text x="380" y="83">2020 → ongoing</text>
+        <text x="545" y="179">2023 → ongoing</text>
+        <text x="545" y="203">2023 → ongoing</text>
+      </g>
+    </svg>
+    <figcaption>Figure 2. Eight conditions across two children. Ayaan's anaemia and Maya's eczema are the two resolved
+    conditions; all others remain active and monitored.</figcaption>
+  </figure>
+
+  <p class="body">Ayaan's asthma followed three wheeze episodes in the winter of 2019 and a positive bronchodilator trial;
+  exacerbations fell from five in 2019 to none in 2026. Maya's eczema began in infancy, was managed with emollients and
+  intermittent topical steroids, and has been inactive since March 2024. Her peanut sensitisation was found on a
+  screening panel after Ayaan's diagnosis — a sibling-driven test, not a clinical reaction — and specific IgE has
+  remained below 1 kU/L since.</p>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 5</span></div>
+</section>
+
+<!-- ============================================================ PAGE 6 -->
+<section class="page">
+  <h1 class="sec">5. Medications &amp; Treatment</h1>
+  <p class="sec-sub">Medication table for both children + adherence comparison</p>
+  <hr class="rule">
+
+  <table class="tbl-tight">
+    <thead><tr><th style="width:9%">Child</th><th style="width:22%">Medication</th><th style="width:10%">Dose</th><th style="width:18%">Frequency</th><th style="width:21%">Indication</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Fluticasone propionate (ICS)</td><td>50 &micro;g</td><td>2 puffs twice daily</td><td>Asthma controller</td><td>Active</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Salbutamol</td><td>100 &micro;g</td><td>2 puffs as needed</td><td>Rescue bronchodilator</td><td>Active</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Cetirizine</td><td>5 mg</td><td>Once daily, Mar–Jun</td><td>Allergic rhinitis</td><td>Seasonal</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Adrenaline auto-injector</td><td>0.15 mg</td><td>Emergency only</td><td>Peanut anaphylaxis</td><td>Active</td></tr>
+      <tr><td class="tag-ayaan">Ayaan</td><td>Ferrous sulfate</td><td>3 mg/kg/day</td><td>Once daily</td><td>Iron-deficiency anaemia</td><td>Completed 2022</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Emollient (ceramide cream)</td><td>—</td><td>Twice daily during flares</td><td>Atopic dermatitis</td><td>Completed 2024</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Hydrocortisone 1%</td><td>Thin layer</td><td>Once daily, max 7 days</td><td>Eczema flare</td><td>As needed</td></tr>
+      <tr><td class="tag-maya">Maya</td><td>Cetirizine</td><td>5 mg</td><td>Once daily, Mar–Jun</td><td>Allergic rhinitis</td><td>Seasonal</td></tr>
+    </tbody>
+  </table>
+
+  <div class="two-col" style="margin-top:14px">
+    <div class="col-60">
+      <div class="chart-title" style="font-size:9pt">Ayaan · rescue inhaler days per month, 2026</div>
+      <svg viewBox="0 0 460 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#E5E9F0" stroke-width="1">
+          <line x1="42" y1="146" x2="446" y2="146"/><line x1="42" y1="112" x2="446" y2="112"/>
+          <line x1="42" y1="78" x2="446" y2="78"/><line x1="42" y1="44" x2="446" y2="44"/>
+        </g>
+        <g font-family="Helvetica Neue, Arial" font-size="9" fill="#6b7280" text-anchor="end">
+          <text x="36" y="149">0</text><text x="36" y="115">2</text><text x="36" y="81">4</text><text x="36" y="47">6</text>
+        </g>
+        <g fill="#1F3864">
+          <rect x="52"  y="44"  width="26" height="102" rx="2"/>
+          <rect x="88"  y="61"  width="26" height="85"  rx="2"/>
+          <rect x="124" y="78"  width="26" height="68"  rx="2"/>
+          <rect x="160" y="95"  width="26" height="51"  rx="2"/>
+          <rect x="196" y="112" width="26" height="34"  rx="2"/>
+          <rect x="232" y="112" width="26" height="34"  rx="2"/>
+          <rect x="268" y="129" width="26" height="17"  rx="2"/>
+          <rect x="304" y="129" width="26" height="17"  rx="2"/>
+          <rect x="340" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+          <rect x="376" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+          <rect x="412" y="144" width="26" height="2"   rx="1" fill="#C9D2E0"/>
+        </g>
+        <g font-family="Helvetica Neue, Arial" font-size="8.5" fill="#6b7280" text-anchor="middle">
+          <text x="65" y="162">Jan</text><text x="101" y="162">Feb</text><text x="137" y="162">Mar</text>
+          <text x="173" y="162">Apr</text><text x="209" y="162">May</text><text x="245" y="162">Jun</text>
+          <text x="281" y="162">Jul</text><text x="317" y="162">Aug</text><text x="353" y="162">Sep</text>
+          <text x="389" y="162">Oct</text><text x="425" y="162">Nov</text>
+        </g>
+      </svg>
+    </div>
+    <div class="col-40">
+      <div class="chart-title" style="font-size:9pt">Adherence, 2026</div>
+      <div class="mil" style="margin-top:8px">
+        <div class="mil-row"><div class="mil-name" style="width:58px">Ayaan</div>
+          <div class="mil-bar" style="height:12px;flex:1"><div class="mil-fill" style="width:92%;background:#1F3864"></div></div>
+          <div class="mil-val" style="width:34px">92%</div></div>
+        <div class="mil-row"><div class="mil-name" style="width:58px">Maya</div>
+          <div class="mil-bar" style="height:12px;flex:1"><div class="mil-fill" style="width:88%;background:#D97706"></div></div>
+          <div class="mil-val" style="width:34px">88%</div></div>
+      </div>
+      <div style="font-size:7.7pt;color:#6b7280;margin-top:6px;line-height:1.45">
+        Ayaan: refill and dose-counter average. Maya: emollient use during the two flare weeks.
+      </div>
+    </div>
+  </div>
+
+  <p class="body" style="margin-top:14px">Ayaan's controller adherence averaged 92% and his rescue use fell to zero by
+  September; no oral corticosteroid course was needed. Step-down to once-daily ICS can be considered after 12
+  symptom-free months, in late 2027. Maya's treatment load is now minimal: emollients only during flares, with
+  hydrocortisone reserved for seven-day courses. Her 2026 adherence figure reflects two short flare weeks in February
+  and March, not daily therapy.</p>
+
+  <div class="callout"><b>Safety relationship.</b> The allergy list on page 7 crosses both medication tables: Ayaan avoids
+  penicillin because of a documented rash, and neither child is prescribed oral antibiotics without checking the
+  allergy record first. Maya carries no auto-injector — her sensitisation is monitored, not treated as an allergy.</div>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 6</span></div>
+</section>
+
+<!-- ============================================================ PAGE 7 -->
+<section class="page">
+  <h1 class="sec">6. Allergies &amp; Immunisations</h1>
+  <p class="sec-sub">Allergy profile for both children + coverage + full schedule</p>
+  <hr class="rule">
+
+  <div class="two-col">
+    <div style="width:66%">
+      <h3 class="chart-title" style="font-size:9pt">Allergy profile</h3>
+      <table class="tbl-tight">
+        <thead><tr><th style="width:8%">Child</th><th style="width:15%">Allergen</th><th style="width:27%">Reaction</th><th style="width:17%">Severity</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Peanut</td><td>Urticaria, lip swelling, wheeze</td><td>Severe (grade 3)</td><td>Avoidance; AAI 0.15 mg</td></tr>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Dust mite</td><td>Rhinitis, sneezing</td><td>Moderate</td><td>Avoidance; cetirizine</td></tr>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Penicillin</td><td>Maculopapular rash</td><td>Mild</td><td>Avoid; alt. antibiotics</td></tr>
+          <tr><td class="tag-maya">Maya</td><td>Peanut (sensitised)</td><td>None to date; IgE 0.8 kU/L</td><td>Monitor only</td><td>Monitor; annual IgE</td></tr>
+          <tr><td class="tag-maya">Maya</td><td>Dust mite</td><td>Mild rhinitis</td><td>Mild</td><td>Saline; cetirizine</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="width:34%">
+      <h3 class="chart-title" style="font-size:9pt">Coverage</h3>
+      <svg viewBox="0 0 170 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="52" cy="62" r="34" fill="none" stroke="#E8EEF9" stroke-width="10"/>
+        <circle cx="52" cy="62" r="34" fill="none" stroke="#1F3864" stroke-width="10"
+                stroke-dasharray="200.1 213.6" stroke-linecap="round" transform="rotate(-90 52 62)"/>
+        <text x="52" y="61" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="14" font-weight="600" fill="#1F3864">94%</text>
+        <text x="52" y="75" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280">Ayaan</text>
+        <text x="52" y="112" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280">34 / 36</text>
+
+        <circle cx="122" cy="62" r="34" fill="none" stroke="#E8EEF9" stroke-width="10"/>
+        <circle cx="122" cy="62" r="34" fill="none" stroke="#D97706" stroke-width="10"
+                stroke-dasharray="207.6 213.6" stroke-linecap="round" transform="rotate(-90 122 62)"/>
+        <text x="122" y="61" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="14" font-weight="600" fill="#9A5B00">97%</text>
+        <text x="122" y="75" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280">Maya</text>
+        <text x="122" y="112" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#6b7280">31 / 32</text>
+      </svg>
+    </div>
+  </div>
+
+  <h3 class="chart-title" style="margin-top:10px;font-size:9pt">Immunisation schedule, both children</h3>
+  <table class="tbl-tight">
+    <thead><tr><th style="width:24%">Vaccine</th><th style="width:18%">Ayaan</th><th style="width:18%">Maya</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>DTaP</td><td>5 / 5</td><td>5 / 5</td><td>Complete; booster due at 11</td></tr>
+      <tr><td>Polio (IPV)</td><td>4 / 4</td><td>4 / 4</td><td>Complete</td></tr>
+      <tr><td>MMR</td><td>2 / 2</td><td>2 / 2</td><td>Complete</td></tr>
+      <tr><td>Varicella</td><td>2 / 2</td><td>2 / 2</td><td>Complete</td></tr>
+      <tr><td>Hepatitis B</td><td>3 / 3</td><td>3 / 3</td><td>Complete</td></tr>
+      <tr><td>Pneumococcal (PCV)</td><td>4 / 4</td><td>4 / 4</td><td>Complete</td></tr>
+      <tr><td>Hib</td><td>4 / 4</td><td>4 / 4</td><td>Complete</td></tr>
+      <tr><td>Influenza (annual)</td><td>7 / 7 · due Oct</td><td>6 / 6 · due Oct</td><td>Both booked</td></tr>
+      <tr><td>HPV</td><td><b style="color:#B91C1C">0 / 2 · Nov</b></td><td>Not due</td><td>Ayaan dose 1 booked 12 Nov 2026</td></tr>
+      <tr><td>MenACWY</td><td>Due at 11</td><td>Not due</td><td>Ayaan booster at 11 y (2027)</td></tr>
+    </tbody>
+  </table>
+
+  <p class="body" style="margin-top:10px">Both children are up to date for age. Ayaan's only open items are the first HPV
+  dose (booked) and the annual influenza vaccine; his MenACWY booster falls in 2027. Maya's schedule is complete apart
+  from the 2026 influenza dose. No vaccine has been refused by either family; the only delay was a two-week
+  postponement of Ayaan's MMR dose two during a febrile illness in 2022.</p>
+
+  <div class="callout"><b>Sibling relationship.</b> Maya was screened for peanut sensitisation only because her brother has
+  a diagnosed allergy. Her IgE is low (0.8 kU/L), she has never reacted, and she eats peanut-containing foods at home
+  under observation — a deliberate distinction from Ayaan's strict avoidance.</div>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 7</span></div>
+</section>
+
+<!-- ============================================================ PAGE 8 -->
+<section class="page">
+  <h1 class="sec">7. Family, Care Team &amp; Record Relationships</h1>
+  <p class="sec-sub">Information-bearing relationship map + relationship tables</p>
+  <hr class="rule">
+
+  <svg viewBox="0 0 760 330" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- grandparents -->
+    <rect x="55" y="6" width="250" height="46" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="67" y="23" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">MATERNAL GRANDPARENTS</text>
+    <text x="67" y="38" font-family="Helvetica Neue, Arial" font-size="9" fill="#1F3864">Type 2 diabetes · hypertension</text>
+
+    <rect x="455" y="6" width="250" height="46" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="467" y="23" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">PATERNAL GRANDPARENTS</text>
+    <text x="467" y="38" font-family="Helvetica Neue, Arial" font-size="9" fill="#1F3864">Asthma · eczema (grandfather)</text>
+
+    <line x1="180" y1="52" x2="180" y2="80" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="580" y1="52" x2="580" y2="80" stroke="#B9C6DA" stroke-width="1.4"/>
+
+    <!-- parents -->
+    <rect x="90" y="80" width="180" height="48" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="102" y="97" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">MOTHER · 38</text>
+    <text x="102" y="112" font-family="Helvetica Neue, Arial" font-size="10" font-weight="600" fill="#1F3864">Sana Siddiqui</text>
+    <text x="102" y="124" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#6b7280">Allergic rhinitis · primary guardian</text>
+
+    <rect x="490" y="80" width="180" height="48" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="502" y="97" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#6b7280" letter-spacing=".5">FATHER · 41</text>
+    <text x="502" y="112" font-family="Helvetica Neue, Arial" font-size="10" font-weight="600" fill="#1F3864">Rizwan Siddiqui</text>
+    <text x="502" y="124" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#6b7280">Childhood asthma · peanut intolerance</text>
+
+    <!-- marriage + children -->
+    <line x1="270" y1="104" x2="490" y2="104" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="380" y1="104" x2="380" y2="146" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="240" y1="146" x2="520" y2="146" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="240" y1="146" x2="240" y2="160" stroke="#B9C6DA" stroke-width="1.4"/>
+    <line x1="520" y1="146" x2="520" y2="160" stroke="#B9C6DA" stroke-width="1.4"/>
+    
+
+    <!-- children -->
+    <rect x="140" y="160" width="200" height="56" rx="6" fill="#1F3864"/>
+    <text x="152" y="177" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#9FB3CF" letter-spacing=".5">CHILD 1 · RCC-PED-2016-0417</text>
+    <text x="152" y="194" font-family="Helvetica Neue, Arial" font-size="11" font-weight="600" fill="#fff">Ayaan · 10 y</text>
+    <text x="152" y="208" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#C9D6E8">Asthma · peanut allergy · myopia</text>
+
+    <rect x="420" y="160" width="200" height="56" rx="6" fill="#9A5B00"/>
+    <text x="432" y="177" font-family="Helvetica Neue, Arial" font-size="7.2" fill="#F3D9B5" letter-spacing=".5">CHILD 2 · RCC-PED-2019-0892</text>
+    <text x="432" y="194" font-family="Helvetica Neue, Arial" font-size="11" font-weight="600" fill="#fff">Maya · 7 y</text>
+    <text x="432" y="208" font-family="Helvetica Neue, Arial" font-size="7.6" fill="#FBE8C9">Eczema (resolved) · rhinitis · sensitised</text>
+
+    <!-- sibling risk link -->
+    <line x1="340" y1="188" x2="420" y2="188" stroke="#B91C1C" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="380" y="182" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="6.6" fill="#B91C1C">sibling screen</text>
+
+    <!-- care team -->
+    <g stroke="#B9C6DA" stroke-width="1.2">
+      <line x1="240" y1="216" x2="115" y2="252"/>
+      <line x1="240" y1="216" x2="290" y2="252"/>
+      <line x1="520" y1="216" x2="470" y2="252"/>
+      <line x1="520" y1="216" x2="650" y2="252"/>
+      <line x1="240" y1="216" x2="470" y2="262"/>
+    </g>
+
+    <rect x="25" y="252" width="180" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="37" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">ALLERGIST · AYAAN</text>
+    <text x="37" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Marcus Feld</text>
+    <text x="37" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">IgE 12.4 kU/L · annual review</text>
+
+    <rect x="205" y="252" width="170" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="217" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">ASTHMA NURSE · AYAAN</text>
+    <text x="217" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Aisha Bello</text>
+    <text x="217" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">4 reviews / year</text>
+
+    <rect x="375" y="252" width="190" height="54" rx="6" fill="#fff" stroke="#9AA6B8"/>
+    <text x="387" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">PAEDIATRICIAN · BOTH</text>
+    <text x="387" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Hina Qureshi</text>
+    <text x="387" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">19 visits · since 2016</text>
+
+    <rect x="565" y="252" width="170" height="54" rx="6" fill="#fff" stroke="#C9D6E8"/>
+    <text x="577" y="268" font-family="Helvetica Neue, Arial" font-size="7" fill="#6b7280" letter-spacing=".4">DERMATOLOGIST · MAYA</text>
+    <text x="577" y="282" font-family="Helvetica Neue, Arial" font-size="9.2" font-weight="600" fill="#1F3864">Dr. Leila Nadeem</text>
+    <text x="577" y="296" font-family="Helvetica Neue, Arial" font-size="7.4" fill="#6b7280">Last review Mar 2024</text>
+
+    <!-- edge labels -->
+    <g font-family="Helvetica Neue, Arial" font-size="6.8" fill="#8a94a6">
+      <text x="150" y="240">1 : N</text>
+      <text x="300" y="240">1 : N</text>
+      <text x="480" y="240">1 : N</text>
+      <text x="600" y="244">1 : N</text>
+      <text x="332" y="270">1 : 2</text>
+    </g>
+  </svg>
+
+  <div class="two-col" style="margin-top:6px">
+    <div class="col-55">
+      <h3 class="chart-title" style="font-size:9pt">Household &amp; care team</h3>
+      <table class="tbl-tight">
+        <thead><tr><th style="width:26%">Person</th><th style="width:24%">Relationship</th><th>Data they can access</th></tr></thead>
+        <tbody>
+          <tr><td>Sana Siddiqui</td><td>Mother · guardian</td><td>Full record for both children</td></tr>
+          <tr><td>Rizwan Siddiqui</td><td>Father · guardian</td><td>Full record for both children</td></tr>
+          <tr><td>Dr. Hina Qureshi</td><td>Paediatrician</td><td>Both records · 19 shared visits</td></tr>
+          <tr><td>Dr. Marcus Feld</td><td>Allergist</td><td>Ayaan only · allergy + immunisation</td></tr>
+          <tr><td>Aisha Bello</td><td>Asthma nurse</td><td>Ayaan only · asthma + medication</td></tr>
+          <tr><td>Dr. Leila Nadeem</td><td>Dermatologist</td><td>Maya only · eczema history</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-45">
+      <h3 class="chart-title" style="font-size:9pt">How the records link</h3>
+      <table class="tbl-tight">
+        <thead><tr><th style="width:38%">From → to</th><th style="width:20%">Cardinality</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Guardian → child</td><td>2 : 2</td><td>Both parents, both children</td></tr>
+          <tr><td>Sibling → sibling</td><td>1 : 1</td><td>Maya screened after Ayaan</td></tr>
+          <tr><td>Clinician → child</td><td>1 : N</td><td>Qureshi covers both</td></tr>
+          <tr><td>Encounter → diagnosis</td><td>1 : N</td><td>2019 wheeze visits → asthma</td></tr>
+          <tr><td>Allergy → medication</td><td>1 : restriction</td><td>Peanut → AAI only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:9px"><b>Why relationships matter.</b> The two records are not independent: a
+  shared guardian consents for both, one paediatrician covers the household, and Maya's allergy screen exists only
+  because of Ayaan's diagnosis. Retrieval that treats each child as an isolated document can return the right fact with
+  the wrong sibling.</div>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 8</span></div>
+</section>
+
+<!-- ============================================================ PAGE 9 -->
+<section class="page">
+  <h1 class="sec">8. Risk Flags &amp; 2027 Outlook</h1>
+  <p class="sec-sub">Risk matrix for both children + 2027 plan + retrieval checks</p>
+  <hr class="rule">
+
+  <div class="two-col">
+    <div class="col-64">
+      <table class="tbl-tight">
+        <thead><tr><th style="width:9%">Child</th><th style="width:26%">Risk</th><th style="width:13%">Likelihood</th><th style="width:11%">Impact</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Asthma exacerbation</td><td>Medium</td><td>High</td><td>Action plan; ICS adherence</td></tr>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Peanut anaphylaxis</td><td>Low</td><td>High</td><td>2 auto-injectors; staff training</td></tr>
+          <tr><td class="tag-ayaan">Ayaan</td><td>Myopia progression</td><td>High</td><td>Medium</td><td>Annual eye exam; outdoor time</td></tr>
+          <tr><td class="tag-maya">Maya</td><td>Peanut allergy conversion</td><td>Low</td><td>High</td><td>Annual IgE; supervised challenge</td></tr>
+          <tr><td class="tag-maya">Maya</td><td>Eczema relapse</td><td>Medium</td><td>Low</td><td>Emollients; trigger diary</td></tr>
+          <tr><td class="tag-maya">Maya</td><td>Immunisation delay</td><td>Medium</td><td>Medium</td><td>Flu booked; school reminder</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-36">
+      <div class="chart-title" style="font-size:9pt">Risk matrix</div>
+      <svg viewBox="0 0 260 252" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#fff" stroke-width="2">
+          <rect x="30" y="10"  width="64" height="64" fill="#FFF4D6"/>
+          <rect x="96" y="10"  width="64" height="64" fill="#FFF4D6"/>
+          <rect x="162" y="10" width="64" height="64" fill="#FDE2E1"/>
+          <rect x="30" y="76"  width="64" height="64" fill="#E8F5EC"/>
+          <rect x="96" y="76"  width="64" height="64" fill="#FFF4D6"/>
+          <rect x="162" y="76" width="64" height="64" fill="#FFF4D6"/>
+          <rect x="30" y="142" width="64" height="64" fill="#E8F5EC"/>
+          <rect x="96" y="142" width="64" height="64" fill="#E8F5EC"/>
+          <rect x="162" y="142" width="64" height="64" fill="#FFF4D6"/>
+        </g>
+        <g>
+          <circle cx="128" cy="42"  r="9" fill="#B91C1C"/><text x="128" y="45.5" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="8.5" fill="#fff">1</text>
+          <circle cx="48"  cy="42"  r="7" fill="#D97706"/><text x="48" y="45" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#fff">2</text>
+          <circle cx="74"  cy="42"  r="7" fill="#D97706"/><text x="74" y="45" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="7.5" fill="#fff">3</text>
+          <circle cx="194" cy="108" r="9" fill="#D97706"/><text x="194" y="111.5" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="8.5" fill="#fff">4</text>
+          <circle cx="128" cy="108" r="9" fill="#D97706"/><text x="128" y="111.5" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="8.5" fill="#fff">5</text>
+          <circle cx="62"  cy="174" r="9" fill="#2F7D6D"/><text x="62" y="177.5" text-anchor="middle" font-family="Helvetica Neue, Arial" font-size="8.5" fill="#fff">6</text>
+        </g>
+        <g font-family="Helvetica Neue, Arial" font-size="8" fill="#6b7280" text-anchor="middle">
+          <text x="62" y="222">Low</text><text x="128" y="222">Medium</text><text x="194" y="222">High</text>
+          <text x="128" y="240" font-size="8.5" fill="#4b5563">Likelihood</text>
+        </g>
+        <text x="14" y="110" font-family="Helvetica Neue, Arial" font-size="8.5" fill="#4b5563" text-anchor="middle" transform="rotate(-90 14 110)">Impact</text>
+      </svg>
+      <div style="font-size:7.2pt;color:#6b7280;line-height:1.5">
+        1 Ayaan asthma · 2 Ayaan peanut · 3 Maya conversion · 4 Ayaan myopia · 5 Maya eczema · 6 Maya immunisation
+      </div>
+    </div>
+  </div>
+
+  <p class="body">For 2027 the plan is preventive for both children. Ayaan turns 11 in March, which brings the MenACWY
+  booster and the second HPV dose; annual spirometry will establish a baseline before any inhaled-corticosteroid
+  step-down. His peanut-specific IgE will be repeated, and peanut oral immunotherapy will be discussed if it falls
+  below 5 kU/L.</p>
+
+  <p>Maya's eczema is in remission and needs only emollients and a trigger diary. Her peanut sensitisation is the main
+  open question: annual IgE and a supervised oral-food challenge in 2027 will determine whether she remains sensitised
+  or converts to clinical allergy. If the challenge is negative, the household allergy plan can be simplified for her
+  while Ayaan's stays unchanged.</p>
+
+  <div class="callout" style="margin-top:8px"><b>Care transition.</b> At 12, Ayaan's record moves to the adolescent clinic;
+  Maya's stays in paediatrics until 12. Because both records already share guardians and a paediatrician, the handover
+  is a permission change, not a rebuild.</div>
+
+  <h3 class="chart-title" style="margin-top:12px;font-size:9.5pt">Suggested multimodal RAG checks</h3>
+  <ul class="checks">
+    <li>Which child is still due for HPV, and which dose has been booked?</li>
+    <li>Which child carries an adrenaline auto-injector, and which is only sensitised?</li>
+    <li>According to the relationship map, which clinician treats both children?</li>
+    <li>Compare the siblings' growth: which percentiles are they on at age 7?</li>
+    <li>When did Maya's eczema resolve, and which medication was stopped?</li>
+    <li>Combine the immunisation table and the priorities: which 2026 target is still in progress?</li>
+  </ul>
+
+  <div class="foot"><span>Siddiqui family — Fictional pediatric record created for a multimodal RAG demonstration</span><span>Page 9</span></div>
+</section>
+
+</body>
+</html>
