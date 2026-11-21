@@ -287,6 +287,41 @@ Each block is capped at 1,200 characters; total context at 6 blocks.
 
 > Answer only from the context and the attached images. Read values directly from the image; do not estimate or interpolate. Cite page and image. If a value is not visible, say so.
 
+### 7.4 Streaming
+
+The answer streams token by token. Retrieval is **not** streamed — it finishes first, so the sources are known before the model starts writing.
+
+**Transport:** `POST /api/query` with `"stream": true` → `text/event-stream`. Plain `fetch` + `ReadableStream` in the UI (not `EventSource`, which cannot POST).
+
+**Event protocol:**
+
+| Event | Payload | When |
+|---|---|---|
+| `meta` | `{route, sources[], k}` | immediately after retrieval, before generation |
+| `token` | `{text}` | per delta |
+| `done` | `{usage, finish_reason}` | end of generation |
+| `error` | `{message, retryable}` | mid-stream failure |
+
+```
+event: meta
+data: {"route":"vision","sources":[{"page":7,"modality":"visual","score":0.82}]}
+
+event: token
+data: {"text":"Resolution time fell "}
+
+event: done
+data: {"usage":{"prompt_tokens":1840,"completion_tokens":96}}
+```
+
+Rules:
+
+- The UI renders the source chips on `meta`, so citations appear before the answer finishes.
+- A 15-second heartbeat comment (`: ping`) keeps proxies from closing an idle stream.
+- OpenRouter is called with `stream: true` on both routes; the vision path streams the same way.
+- Mid-stream failure keeps the partial text, marks it "incomplete", and offers retry.
+- The Abort button cancels the fetch; the server stops reading upstream and releases the stream.
+- `stream: false` returns the JSON contract in §7.2 unchanged — CLI and tests use that path.
+
 ---
 
 ## 8. Qdrant
@@ -340,7 +375,7 @@ Create on first ingest (idempotent):
 | GET | `/api/documents` | list with status and counts |
 | GET | `/api/documents/{id}` | manifest + chunk list summary |
 | DELETE | `/api/documents/{id}` | delete points + assets |
-| POST | `/api/query` | `{question, k?, modalities?}` → answer contract |
+| POST | `/api/query` | `{question, k?, modalities?, stream?}` → answer JSON, or SSE when `stream=true` |
 | GET | `/assets/{path}` | serve extracted images |
 | GET | `/` | the UI |
 
@@ -370,7 +405,9 @@ One page, three tabs, no framework.
 **Search**
 
 - Query box; `k` slider; modality chips (all / text / table / visual).
-- Answer panel: route badge (`vision` / `text`), the answer, source chips (`p7 · visual`).
+- Answer panel: route badge (`vision` / `text`), the answer **streamed token by token**, source chips (`p7 · visual`).
+- Source chips render on `meta`, before the first token.
+- While streaming: blinking caret and a Stop button; after `done`: copy button.
 - Evidence list: each hit as a card — modality chip, page, score, snippet; visual hits show a thumbnail that opens full size.
 - Empty state: "No hits — ingest a PDF first."
 
@@ -447,6 +484,7 @@ Free-tier assumptions: Qdrant single cluster (already used), OpenRouter free mod
 | 8 | "Which clinician treats both children?" | Dr. Hina Qureshi, cites p8 — vector map |
 | 9 | Filter `modality=visual` for "solar" | returns the pie chart only |
 | 10 | Delete a document | points gone, assets gone, search no longer returns it |
+| 11 | Query with `stream=true` | `meta` arrives before the first token; sources visible immediately; Stop cancels the stream |
 
 Tests 7 and 8 are the ones that fail if the vector fallback is not implemented.
 
@@ -461,7 +499,7 @@ Tests 7 and 8 are the ones that fail if the vector fallback is not implemented.
 | M3 | embeddings + Qdrant upsert + manifests | one commit, CLI ingest |
 | M4 | retrieval + answer contract (text only) | one commit, CLI query |
 | M5 | captioning + vision route | one commit, acceptance test 3 |
-| M6 | FastAPI + UI | one commit per tab if needed |
+| M6 | FastAPI + SSE streaming + UI | one commit per tab if needed |
 | M7 | acceptance run on both PDFs + Docs update | one commit |
 
 Each milestone is runnable before the next starts. `Docs/` gets a short implementation note linking here.
@@ -470,6 +508,6 @@ Each milestone is runnable before the next starts. `Docs/` gets a short implemen
 
 ## 16. Out of scope (v1)
 
-OCR · S3 · auth/multi-user · reranking · chart-to-table transcription · multi-page table merging · streaming answers · background queue · document versioning.
+OCR · S3 · auth/multi-user · reranking · chart-to-table transcription · multi-page table merging · background queue · document versioning.
 
-Each is an isolated addition: the storage adapter covers S3, the answer contract covers streaming, and the retrieval step has a single place for a reranker.
+Each is an isolated addition: the storage adapter covers S3, the retrieval step has a single place for a reranker.
