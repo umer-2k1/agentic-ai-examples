@@ -20,6 +20,8 @@ question → embed → top-k → text LLM or vision LLM → streamed answer + ci
 - **Embeddings run inside Qdrant** (`sentence-transformers/all-MiniLM-L6-v2`, 384-d) — no local model, no extra key.
 - **Captions come from OpenRouter** free vision models, with a fallback chain.
 - **Vector charts** are found with `page.get_drawings()`, merged with their text labels, clipped and rendered to PNG.
+- **If the OpenRouter free pool is rate-limited**, text answers fall back to Groq (`openai/gpt-oss-120b`) and visual
+  questions degrade to their caption text. Captions are cached by image hash, so re-ingestion never re-captions.
 
 ---
 

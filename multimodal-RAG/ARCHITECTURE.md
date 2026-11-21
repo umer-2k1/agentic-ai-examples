@@ -27,6 +27,7 @@ Success means: a question whose answer lives only in a chart gets answered **and
 | Chunking | page-level text; tables and visuals never split | citations stay exact | fixed 512-token windows |
 | PDF visuals | embedded images first; **vector regions via `get_drawings()` → clip render** | 2 of the sample figures are vector-only | image-only extraction |
 | Assets | local `assets/`, behind a storage adapter | no S3 yet; swap later without touching the pipeline | direct file writes |
+| Text fallback | **Groq** `openai/gpt-oss-120b` | OpenRouter's free pool rate-limits under load; Groq keeps text answers alive | retry loops only |
 
 ---
 
@@ -222,7 +223,7 @@ Prompt (fixed, versioned in `caption.py`):
 
 Rules:
 
-- One call per visual, 3 retries with exponential backoff.
+- One call per visual, 3 retries with exponential backoff, cached by image hash under `data/captions/`.
 - Images are downscaled to a 1,600 px long edge and sent as base64 data URLs.
 - The caption is the retrievable text; the PNG is the answer-time evidence.
 - `caption_status=failed` still stores the point, with `content = "Figure on page N (caption unavailable)"`, so the page is visible but not semantically searchable.
@@ -430,6 +431,7 @@ Visual language follows the Docs: navy `#1F3864`, teal `#2F7D6D`, modality colou
 | `OPENROUTER_API_KEY` | yes | — | |
 | `OPENROUTER_VISION_MODEL` | no | first working free VLM | fallback list in config |
 | `OPENROUTER_TEXT_MODEL` | no | free text model | can equal the vision model |
+| `GROQ_API_KEY` | no | read from the repo-root `.env` | text-only fallback provider |
 | `EMBED_MODEL` | no | `sentence-transformers/all-MiniLM-L6-v2` | must match the collection |
 | `EMBED_DIM` | no | 384 | validated against the collection |
 | `EMBED_DIM` | no | 384 | validated against the collection |
@@ -448,7 +450,7 @@ Startup validation: fail fast with a readable message if a required value is mis
 |---|---|---|
 | Qdrant unreachable | search 503 | health banner; retry button |
 | Qdrant inference error | embedding fails | retry, resume from manifest |
-| OpenRouter rate limit | captions fail | retry, then `caption_status=failed`, doc `partial` |
+| OpenRouter rate limit | captions fail | retry, then `caption_status=failed`, doc `partial`; text answers fall back to Groq |
 | Scanned PDF | no text chunks | flag `ocr_required`; visuals still ingested |
 | Vector clustering merges two figures | one crop with both | acceptable v1; bbox logged for tuning |
 | Wrong visual forced into context | irrelevant image | threshold: only force if score ≥ 0.35 |
