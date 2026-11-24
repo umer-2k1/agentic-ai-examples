@@ -5,6 +5,10 @@ let docs = [];
 let pollTimer = null;
 let controller = null;
 let lastQuery = null;
+let currentAnswer = "";
+let currentSources = [];
+let startedAt = 0;
+let finalized = false;
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -200,13 +204,22 @@ function currentModalities() {
 
 function resetAnswer() {
   $("#answer").hidden = false;
+  $("#answer").classList.remove("vision");
   $("#answerBody").textContent = "";
   $("#answerBody").classList.add("streaming");
   $("#sources").innerHTML = "";
   $("#route").textContent = "…";
   $("#route").className = "route";
-  $("#evidence").innerHTML = "";
+  $("#answerMeta").textContent = "retrieving…";
+  $("#answerFoot").textContent = "";
+  $("#copyBtn").hidden = true;
   $("#stopBtn").hidden = false;
+  $("#evidence").innerHTML = "";
+  $("#evidenceHead").hidden = true;
+  currentAnswer = "";
+  currentSources = [];
+  finalized = false;
+  startedAt = Date.now();
 }
 
 function finishStream() {
@@ -215,13 +228,41 @@ function finishStream() {
   $("#askBtn").disabled = false;
 }
 
+function linkify(text) {
+  return esc(text).replace(/\[p(\d+)\]/g, (_, p) =>
+    `<button class="cite" data-page="${p}">p${p}</button>`);
+}
+
+function finalize() {
+  if (finalized) return;
+  finalized = true;
+  finishStream();
+  $("#answerBody").innerHTML = linkify(currentAnswer);
+  const secs = ((Date.now() - startedAt) / 1000).toFixed(1);
+  const visuals = currentSources.filter((s) => s.modality === "visual").length;
+  $("#answerFoot").textContent =
+    `${secs}s · ${currentSources.length} sources · ${visuals} image${visuals === 1 ? "" : "s"}`;
+  $("#copyBtn").hidden = !currentAnswer.trim();
+  document.querySelectorAll(".cite").forEach((b) => {
+    b.onclick = () => {
+      const hit = [...document.querySelectorAll(".hit")].find((h) => h.dataset.page === b.dataset.page);
+      if (hit) {
+        hit.scrollIntoView({ behavior: "smooth", block: "center" });
+        hit.classList.add("flash");
+        setTimeout(() => hit.classList.remove("flash"), 1200);
+      }
+    };
+  });
+}
+
 function docLabel(source) {
   return (source || "").split("_")[0] || "doc";
 }
 
 function renderSources(sources) {
+  currentSources = sources;
   $("#sources").innerHTML = sources.map((s, i) =>
-    `<button class="src" data-src="${i}">${esc(docLabel(s.source))} · p${s.page} · ${esc(s.modality)}</button>`).join("");
+    `<button class="src" data-src="${i}" title="${esc((s.chunk_id || "") + ' · ' + (s.snippet || ""))}">${esc(docLabel(s.source))} · p${s.page} · ${esc(s.modality)}</button>`).join("");
   $("#sources").querySelectorAll("[data-src]").forEach((b) => {
     b.onclick = () => {
       const s = sources[Number(b.dataset.src)];
@@ -232,11 +273,13 @@ function renderSources(sources) {
 }
 
 function renderEvidence(sources) {
+  $("#evidenceHead").hidden = false;
+  $("#evidenceHead").textContent = `Evidence · ${sources.length} chunks`;
   $("#evidence").innerHTML = sources.map((s, i) => {
     const thumb = s.modality === "visual" && s.asset_path
       ? `<img class="hit-thumb" src="/assets/${s.asset_path}" alt="p${s.page}" data-open="/assets/${s.asset_path}">` : "";
     return `
-      <div class="hit" id="hit-${i}">
+      <div class="hit" id="hit-${i}" data-page="${s.page}">
         ${thumb}
         <div class="hit-body">
           <div class="hit-top">
@@ -303,12 +346,15 @@ async function ask(question) {
         renderSources(data.sources || []);
         renderEvidence(data.sources || []);
       } else if (event === "token") {
-        $("#answerBody").textContent += data.text;
+        currentAnswer += data.text;
+        $("#answerBody").textContent = currentAnswer;
+        $("#answerMeta").textContent = "streaming…";
       } else if (event === "done") {
-        finishStream();
+        finalize();
       } else if (event === "error") {
-        $("#answerBody").textContent += `\n\n[error] ${data.message}`;
-        finishStream();
+        currentAnswer += `\n\n[error] ${data.message}`;
+        $("#answerBody").textContent = currentAnswer;
+        finalize();
       }
     });
   } catch (e) {
@@ -316,7 +362,7 @@ async function ask(question) {
       $("#answerBody").textContent = `Request failed: ${e.message}`;
     }
   } finally {
-    finishStream();
+    finalize();
     controller = null;
   }
 }
@@ -326,6 +372,14 @@ function openLightbox(src) {
   $("#lightboxImg").src = src;
   $("#lightbox").classList.add("open");
 }
+$("#copyBtn").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(currentAnswer);
+    $("#copyBtn").textContent = "copied";
+    setTimeout(() => { $("#copyBtn").textContent = "copy"; }, 1200);
+  } catch (_) {}
+};
+
 $("#lightbox").onclick = () => {
   $("#lightbox").classList.remove("open");
   $("#lightboxImg").src = "";

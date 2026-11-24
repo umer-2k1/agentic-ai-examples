@@ -67,13 +67,25 @@
 
     <div class="answer" id="answer" hidden>
       <div class="answer-head">
+        <span class="answer-title">Answer</span>
         <span class="route" id="route">—</span>
-        <div class="sources" id="sources"></div>
-        <button class="link stop" id="stopBtn" hidden>stop</button>
+        <span class="answer-meta" id="answerMeta"></span>
+        <div class="answer-actions">
+          <button class="link" id="copyBtn" hidden>copy</button>
+          <button class="link stop" id="stopBtn" hidden>stop</button>
+        </div>
       </div>
+
+      <div class="source-row">
+        <span class="source-label">Sources</span>
+        <div class="sources" id="sources"></div>
+      </div>
+
       <div class="answer-body" id="answerBody"></div>
+      <div class="answer-foot" id="answerFoot"></div>
     </div>
 
+    <div class="evidence-head" id="evidenceHead" hidden></div>
     <div class="evidence" id="evidence"></div>
   </section>
 

@@ -152,3 +152,34 @@ table.docs tr:last-child td { border-bottom: 0; }
 
 .empty { color: var(--soft); font-size: 13px; padding: 18px 0; }
 .error { background: #fdecec; border: 1px solid #f5c2c2; color: var(--red); padding: 10px 12px; border-radius: 9px; font-size: 13px; }
+
+
+/* ---------- answer panel v2 ---------- */
+.answer{
+  position:relative; background:#fff; border:1px solid var(--line); border-radius:16px;
+  padding:16px 20px 14px; box-shadow:0 1px 2px rgba(16,24,40,.04), 0 14px 30px -24px rgba(16,24,40,.35);
+  border-top:3px solid var(--navy);
+}
+.answer.vision{ border-top-color:var(--orange); }
+.answer-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.answer-title{ font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); }
+.answer-meta{ font-size:11.5px; color:var(--soft); }
+.answer-actions{ margin-left:auto; display:flex; gap:12px; }
+.answer-actions .link{ font-size:12px; }
+.source-row{ display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:10px; border-top:1px dashed #eceff5; }
+.source-label{ font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); white-space:nowrap; }
+.source-row .sources{ flex:1; }
+.answer-body{
+  margin-top:14px; font-size:16.5px; line-height:1.7; color:#1f2937; max-width:74ch;
+  letter-spacing:-.01em;
+}
+.answer-body:empty::before{ content:"Reading the retrieved chunks…"; color:var(--soft); font-size:14px; }
+.answer-foot{ margin-top:12px; font-size:11px; color:var(--soft); display:flex; gap:12px; }
+.cite{
+  all:unset; cursor:pointer; font-size:.8em; font-weight:600; color:var(--navy);
+  background:#eef2ff; border:1px solid #dfe6f5; border-radius:5px; padding:0 4px; margin:0 1px;
+  vertical-align:1px;
+}
+.cite:hover{ background:#dfe7fb; }
+.evidence-head{ margin:22px 0 9px; font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); }
+.hit.flash{ box-shadow:0 0 0 3px rgba(47,125,109,.25); transition:box-shadow .2s; }
