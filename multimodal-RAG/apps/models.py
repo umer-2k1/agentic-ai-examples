@@ -75,6 +75,7 @@ class Hit:
 
     def source_ref(self) -> dict[str, Any]:
         return {
+            "chunk_id": self.payload.get("chunk_id"),
             "page": self.page,
             "modality": self.modality,
             "score": round(float(self.score), 3),

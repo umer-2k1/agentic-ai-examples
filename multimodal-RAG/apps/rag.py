@@ -24,8 +24,15 @@ MAX_IMAGES = 2
 
 def retrieve(question: str, k: int | None = None, modalities: list[str] | None = None) -> list[Hit]:
     k = k or settings.top_k
-    candidates = store.search(question, k=k, modalities=modalities, fetch=max(k * 2, 8))
+    candidates = store.search(question, k=k, modalities=modalities, fetch=max(k * 3, 15))
     selected = candidates[:k]
+
+    # if the best chunk has a figure on its page, that figure is almost always the evidence
+    if selected and (not modalities or "visual" in modalities):
+        top_page = selected[0].page
+        same_page = next((h for h in candidates if h.modality == "visual" and h.page == top_page), None)
+        if same_page and not any(h.modality == "visual" and h.page == top_page for h in selected):
+            selected = selected[:-1] + [same_page]
 
     # keep a visual only when it is genuinely competitive with the top hit
     if not any(h.modality == "visual" for h in selected):
@@ -71,6 +78,26 @@ def _image_part(png_path) -> dict | None:
         return None
 
 
+def _select_visuals(hits: list[Hit]) -> list[Hit]:
+    """Prefer the visual on the same page as the best text/table hit, then the best visual.
+    Charts usually live on the page the text chunk came from."""
+    visuals = [h for h in hits if h.modality == "visual" and h.asset_path]
+    if not visuals:
+        return []
+    top_page = next((h.page for h in hits if h.modality in ("text", "table")), None)
+    chosen: list[Hit] = []
+    for hit in visuals:
+        if hit.page == top_page:
+            chosen.append(hit)
+            break
+    for hit in visuals:
+        if len(chosen) >= MAX_IMAGES:
+            break
+        if hit not in chosen:
+            chosen.append(hit)
+    return chosen
+
+
 def _messages(question: str, hits: list[Hit], route: str) -> tuple[list[dict], bool]:
     context = context_blocks(hits)
     prompt = ANSWER_VISION_PROMPT if route == "vision" else ANSWER_TEXT_PROMPT
@@ -79,7 +106,7 @@ def _messages(question: str, hits: list[Hit], route: str) -> tuple[list[dict], b
     content: list[dict] = [{"type": "text", "text": text}]
     used_image = False
     if route == "vision":
-        visuals = [h for h in hits if h.modality == "visual" and h.asset_path][:MAX_IMAGES]
+        visuals = _select_visuals(hits)
         for hit in visuals:
             path = storage.resolve(hit.asset_path)
             if not storage.exists(hit.asset_path):
