@@ -215,9 +215,13 @@ function finishStream() {
   $("#askBtn").disabled = false;
 }
 
+function docLabel(source) {
+  return (source || "").split("_")[0] || "doc";
+}
+
 function renderSources(sources) {
   $("#sources").innerHTML = sources.map((s, i) =>
-    `<button class="src" data-src="${i}">p${s.page} · ${esc(s.modality)}</button>`).join("");
+    `<button class="src" data-src="${i}">${esc(docLabel(s.source))} · p${s.page} · ${esc(s.modality)}</button>`).join("");
   $("#sources").querySelectorAll("[data-src]").forEach((b) => {
     b.onclick = () => {
       const s = sources[Number(b.dataset.src)];
@@ -237,7 +241,7 @@ function renderEvidence(sources) {
         <div class="hit-body">
           <div class="hit-top">
             <span class="mod ${s.modality}">${esc(s.modality)}</span>
-            <span>page ${s.page}</span>
+            <span>${esc(docLabel(s.source))} · page ${s.page}</span>
             <span class="score">${Number(s.score).toFixed(3)}</span>
           </div>
           <div class="hit-text">${esc(s.snippet || "")}</div>
