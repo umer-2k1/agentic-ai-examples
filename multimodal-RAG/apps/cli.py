@@ -11,10 +11,12 @@ from pathlib import Path
 from .config import settings
 from .ingest import delete_document, ingest_document, list_documents, register_pdf
 from .rag import answer, stream_answer
+from .telemetry import setup_telemetry, span
 from .vectorstore import store
 
 
 def cmd_ingest(args) -> int:
+    setup_telemetry()
     path = Path(args.path)
     if not path.exists():
         print(f"not found: {path}", file=sys.stderr)
@@ -25,23 +27,26 @@ def cmd_ingest(args) -> int:
         return 1
 
     for pdf in files:
-        manifest = register_pdf(pdf)
-        print(f"→ {pdf.name}  [{manifest['document_id']}]  {manifest['status']}")
-        manifest = ingest_document(manifest["document_id"], force=args.force)
-        counts = manifest.get("counts", {})
-        print(f"  {manifest['status']}  text={counts.get('text', 0)} "
-              f"table={counts.get('table', 0)} visual={counts.get('visual', 0)}")
-        if manifest.get("error"):
-            print(f"  error: {manifest['error']}", file=sys.stderr)
-        if manifest.get("warnings"):
-            for warning in manifest["warnings"][:5]:
-                print(f"  warn: {warning}")
+        with span("cli.ingest", file=pdf.name):
+            manifest = register_pdf(pdf)
+            print(f"→ {pdf.name}  [{manifest['document_id']}]  {manifest['status']}")
+            manifest = ingest_document(manifest["document_id"], force=args.force)
+            counts = manifest.get("counts", {})
+            print(f"  {manifest['status']}  text={counts.get('text', 0)} "
+                  f"table={counts.get('table', 0)} visual={counts.get('visual', 0)}")
+            if manifest.get("error"):
+                print(f"  error: {manifest['error']}", file=sys.stderr)
+            if manifest.get("warnings"):
+                for warning in manifest["warnings"][:5]:
+                    print(f"  warn: {warning}")
     return 0
 
 
 def cmd_query(args) -> int:
+    setup_telemetry()
     if args.json:
-        print(json.dumps(answer(args.question, args.k).to_dict(), indent=2, ensure_ascii=False))
+        with span("cli.query", mode="json"):
+            print(json.dumps(answer(args.question, args.k).to_dict(), indent=2, ensure_ascii=False))
         return 0
 
     started = time.time()

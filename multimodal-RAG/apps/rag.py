@@ -13,6 +13,7 @@ from PIL import Image
 from .assets import storage
 from .config import ANSWER_TEXT_PROMPT, ANSWER_VISION_PROMPT, settings
 from .models import Answer, Hit
+from .telemetry import current_trace_id, set_gen_ai, span
 from .vectorstore import store
 
 API = "https://openrouter.ai/api/v1/chat/completions"
@@ -24,7 +25,11 @@ MAX_IMAGES = 2
 
 def retrieve(question: str, k: int | None = None, modalities: list[str] | None = None) -> list[Hit]:
     k = k or settings.top_k
-    candidates = store.search(question, k=k, modalities=modalities, fetch=max(k * 3, 15))
+    with span("retrieval.search", k=k, modalities=str(modalities or "all")) as search_span:
+        candidates = store.search(question, k=k, modalities=modalities, fetch=max(k * 3, 15))
+        search_span.set_attribute("retrieval.candidates", len(candidates))
+        if candidates:
+            search_span.set_attribute("retrieval.top_score", round(float(candidates[0].score), 3))
     selected = candidates[:k]
 
     # if the best chunk has a figure on its page, that figure is almost always the evidence
@@ -157,7 +162,7 @@ def _sources(hits: list[Hit]) -> list[dict]:
 def answer(question: str, k: int | None = None, modalities: list[str] | None = None) -> Answer:
     hits = retrieve(question, k, modalities)
     if not hits:
-        return Answer("Not in the document.", "none", [])
+        return Answer("Not in the document.", "none", [], trace_id=current_trace_id())
 
     route = route_for(hits)
     messages, used_image = _messages(question, hits, route)
@@ -169,24 +174,30 @@ def answer(question: str, k: int | None = None, modalities: list[str] | None = N
     for model in _models_for(route):
         try:
             url, headers, name = _provider(model)
-            resp = httpx.post(
-                url,
-                headers=headers,
-                json={"model": name, "messages": messages, "temperature": 0.1, "max_tokens": 700},
-                timeout=180,
-            )
-            if resp.status_code != 200:
-                last_error = f"{model}: HTTP {resp.status_code}"
-                continue
-            payload = resp.json()
-            choices = payload.get("choices") or []
-            if not choices:
-                last_error = f"{model}: empty response"
-                continue
-            content = choices[0]["message"]["content"]
-            if isinstance(content, list):
-                content = " ".join(p.get("text", "") for p in content if isinstance(p, dict))
-            return Answer(content.strip(), route, _sources(hits), payload.get("usage", {}))
+            provider = "groq" if model.startswith("groq:") else "openrouter"
+            with span("llm.chat", route=route) as llm_span:
+                resp = httpx.post(
+                    url,
+                    headers=headers,
+                    json={"model": name, "messages": messages, "temperature": 0.1, "max_tokens": 700},
+                    timeout=180,
+                )
+                llm_span.set_attribute("http.status_code", resp.status_code)
+                llm_span.set_attribute("gen_ai.request.model", name)
+                if resp.status_code != 200:
+                    last_error = f"{model}: HTTP {resp.status_code}"
+                    continue
+                payload = resp.json()
+                choices = payload.get("choices") or []
+                if not choices:
+                    last_error = f"{model}: empty response"
+                    continue
+                content = choices[0]["message"]["content"]
+                if isinstance(content, list):
+                    content = " ".join(p.get("text", "") for p in content if isinstance(p, dict))
+                set_gen_ai(llm_span, name, provider, payload.get("usage", {}))
+            return Answer(content.strip(), route, _sources(hits), payload.get("usage", {}),
+                          trace_id=current_trace_id())
         except Exception as exc:
             last_error = f"{model}: {type(exc).__name__}"
 
@@ -196,24 +207,30 @@ def answer(question: str, k: int | None = None, modalities: list[str] | None = N
         for model in _models_for("text"):
             try:
                 url, headers, name = _provider(model)
-                resp = httpx.post(url, headers=headers,
-                                  json={"model": name, "messages": text_messages,
-                                        "temperature": 0.1, "max_tokens": 700}, timeout=180)
-                if resp.status_code != 200:
-                    last_error = f"{model}: HTTP {resp.status_code}"
-                    continue
-                payload = resp.json()
-                choices = payload.get("choices") or []
-                if not choices:
-                    continue
-                content = choices[0]["message"]["content"]
-                if isinstance(content, list):
-                    content = " ".join(p.get("text", "") for p in content if isinstance(p, dict))
-                return Answer(content.strip(), "text", _sources(hits), payload.get("usage", {}))
+                with span("llm.chat.fallback") as llm_span:
+                    resp = httpx.post(url, headers=headers,
+                                      json={"model": name, "messages": text_messages,
+                                            "temperature": 0.1, "max_tokens": 700}, timeout=180)
+                    llm_span.set_attribute("http.status_code", resp.status_code)
+                    if resp.status_code != 200:
+                        last_error = f"{model}: HTTP {resp.status_code}"
+                        continue
+                    payload = resp.json()
+                    choices = payload.get("choices") or []
+                    if not choices:
+                        continue
+                    content = choices[0]["message"]["content"]
+                    if isinstance(content, list):
+                        content = " ".join(p.get("text", "") for p in content if isinstance(p, dict))
+                    set_gen_ai(llm_span, name, "groq" if model.startswith("groq:") else "openrouter",
+                               payload.get("usage", {}))
+                return Answer(content.strip(), "text", _sources(hits), payload.get("usage", {}),
+                              trace_id=current_trace_id())
             except Exception as exc:
                 last_error = f"{model}: {type(exc).__name__}"
 
-    return Answer(f"Generation failed ({last_error}).", route, _sources(hits))
+    return Answer(f"Generation failed ({last_error}).", route, _sources(hits),
+                  trace_id=current_trace_id())
 
 
 # ---------- streaming ----------
@@ -223,72 +240,37 @@ def stream_answer(question: str, k: int | None = None,
     """Yield (event, data) tuples: meta, token, done, error."""
     hits = retrieve(question, k, modalities)
     route = route_for(hits) if hits else "none"
-    yield "meta", {"route": route, "sources": _sources(hits), "k": k or settings.top_k}
+    yield "meta", {"route": route, "sources": _sources(hits), "k": k or settings.top_k,
+                   "trace_id": current_trace_id()}
 
     if not hits:
         yield "token", {"text": "Not in the document."}
-        yield "done", {"usage": {}, "finish_reason": "stop"}
+        yield "done", {"usage": {}, "finish_reason": "stop", "trace_id": current_trace_id()}
         return
 
     messages, used_image = _messages(question, hits, route)
     if route == "vision" and not used_image:
         route = "text"
         messages, _ = _messages(question, hits, route)
-        yield "meta", {"route": route, "sources": _sources(hits), "k": k or settings.top_k}
+        yield "meta", {"route": route, "sources": _sources(hits), "k": k or settings.top_k,
+                       "trace_id": current_trace_id()}
 
     last_error = None
     for model in _models_for(route):
         try:
             url, headers, name = _provider(model)
-            with httpx.stream(
-                "POST",
-                url,
-                headers=headers,
-                json={"model": name, "messages": messages, "temperature": 0.1,
-                      "max_tokens": 700, "stream": True},
-                timeout=180,
-            ) as resp:
-                if resp.status_code != 200:
-                    last_error = f"{model}: HTTP {resp.status_code}"
-                    resp.read()
-                    continue
-                started = False
-                for line in resp.iter_lines():
-                    if not line or not line.startswith("data:"):
-                        continue
-                    data = line[5:].strip()
-                    if data == "[DONE]":
-                        break
-                    try:
-                        event = json.loads(data)
-                    except json.JSONDecodeError:
-                        continue
-                    choices = event.get("choices") or []
-                    if not choices:
-                        continue
-                    delta = choices[0].get("delta", {}).get("content")
-                    if delta:
-                        started = True
-                        yield "token", {"text": delta}
-                    if choices[0].get("finish_reason"):
-                        yield "done", {"usage": event.get("usage", {}),
-                                       "finish_reason": choices[0]["finish_reason"]}
-                        return
-                if started:
-                    yield "done", {"usage": {}, "finish_reason": "stop"}
-                    return
-                last_error = f"{model}: empty stream"
-        except Exception as exc:
-            last_error = f"{model}: {type(exc).__name__}"
-
-    if route == "vision":
-        text_messages, _ = _messages(question, hits, "text")
-        for model in _models_for("text"):
-            try:
-                url, headers, name = _provider(model)
-                with httpx.stream("POST", url, headers=headers,
-                                  json={"model": name, "messages": text_messages, "temperature": 0.1,
-                                        "max_tokens": 700, "stream": True}, timeout=180) as resp:
+            provider = "groq" if model.startswith("groq:") else "openrouter"
+            with span("llm.stream", route=route) as llm_span:
+                llm_span.set_attribute("gen_ai.request.model", name)
+                with httpx.stream(
+                    "POST",
+                    url,
+                    headers=headers,
+                    json={"model": name, "messages": messages, "temperature": 0.1,
+                          "max_tokens": 700, "stream": True},
+                    timeout=180,
+                ) as resp:
+                    llm_span.set_attribute("http.status_code", resp.status_code)
                     if resp.status_code != 200:
                         resp.read()
                         last_error = f"{model}: HTTP {resp.status_code}"
@@ -312,12 +294,60 @@ def stream_answer(question: str, k: int | None = None,
                             started = True
                             yield "token", {"text": delta}
                         if choices[0].get("finish_reason"):
+                            set_gen_ai(llm_span, name, provider, event.get("usage", {}))
                             yield "done", {"usage": event.get("usage", {}),
-                                           "finish_reason": choices[0]["finish_reason"]}
+                                           "finish_reason": choices[0]["finish_reason"],
+                                           "trace_id": current_trace_id()}
                             return
                     if started:
-                        yield "done", {"usage": {}, "finish_reason": "stop"}
+                        yield "done", {"usage": {}, "finish_reason": "stop",
+                                       "trace_id": current_trace_id()}
                         return
+                    last_error = f"{model}: empty stream"
+        except Exception as exc:
+            last_error = f"{model}: {type(exc).__name__}"
+
+    if route == "vision":
+        text_messages, _ = _messages(question, hits, "text")
+        for model in _models_for("text"):
+            try:
+                url, headers, name = _provider(model)
+                with span("llm.stream.fallback") as llm_span:
+                    with httpx.stream("POST", url, headers=headers,
+                                      json={"model": name, "messages": text_messages,
+                                            "temperature": 0.1, "max_tokens": 700,
+                                            "stream": True}, timeout=180) as resp:
+                        if resp.status_code != 200:
+                            resp.read()
+                            last_error = f"{model}: HTTP {resp.status_code}"
+                            continue
+                        started = False
+                        for line in resp.iter_lines():
+                            if not line or not line.startswith("data:"):
+                                continue
+                            data = line[5:].strip()
+                            if data == "[DONE]":
+                                break
+                            try:
+                                event = json.loads(data)
+                            except json.JSONDecodeError:
+                                continue
+                            choices = event.get("choices") or []
+                            if not choices:
+                                continue
+                            delta = choices[0].get("delta", {}).get("content")
+                            if delta:
+                                started = True
+                                yield "token", {"text": delta}
+                            if choices[0].get("finish_reason"):
+                                yield "done", {"usage": event.get("usage", {}),
+                                               "finish_reason": choices[0]["finish_reason"],
+                                               "trace_id": current_trace_id()}
+                                return
+                        if started:
+                            yield "done", {"usage": {}, "finish_reason": "stop",
+                                           "trace_id": current_trace_id()}
+                            return
             except Exception as exc:
                 last_error = f"{model}: {type(exc).__name__}"
 

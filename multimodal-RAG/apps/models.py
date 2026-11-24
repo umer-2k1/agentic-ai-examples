@@ -91,6 +91,7 @@ class Answer:
     route: str
     sources: list[dict[str, Any]]
     usage: dict[str, Any] = field(default_factory=dict)
+    trace_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -98,4 +99,5 @@ class Answer:
             "route": self.route,
             "sources": self.sources,
             "usage": self.usage,
+            "trace_id": self.trace_id,
         }

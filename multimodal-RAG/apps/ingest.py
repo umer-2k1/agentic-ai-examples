@@ -15,6 +15,7 @@ from .caption import CaptionError, caption_png
 from .config import settings
 from .models import Chunk
 from .pdf_extract import FigurePiece, TextPiece, extract_pdf
+from .telemetry import span
 from .vectorstore import store
 
 INGEST_LOCK = threading.Lock()
@@ -163,7 +164,11 @@ def ingest_document(document_id: str, force: bool = False) -> dict:
                         progress={"step": "extracting", "done": 0, "total": 0})
         save_manifest(manifest)
 
-        extraction = extract_pdf(pdf_path)
+        with span("ingest.extract", document_id=document_id) as extract_span:
+            extraction = extract_pdf(pdf_path)
+            extract_span.set_attribute("pdf.pages", extraction.pages)
+            extract_span.set_attribute("pdf.figures", len(extraction.figures))
+            extract_span.set_attribute("pdf.tables", len(extraction.tables))
         manifest["pages"] = extraction.pages
         if extraction.empty_pages:
             manifest["ocr_required"] = True
@@ -198,7 +203,9 @@ def ingest_document(document_id: str, force: bool = False) -> dict:
         def work(job):
             fig, rel_path, asset_hash, n = job
             try:
-                caption, model = caption_png(fig.png)
+                with span("ingest.caption", page=fig.page, kind=fig.kind) as caption_span:
+                    caption, model = caption_png(fig.png)
+                    caption_span.set_attribute("caption.model", model or "")
                 return job, caption, model, True
             except CaptionError:
                 # deterministic fallback so the figure is still retrievable
@@ -270,8 +277,10 @@ def ingest_document(document_id: str, force: bool = False) -> dict:
                         })
         save_manifest(manifest)
 
-        store.delete_document(document_id)
-        written = store.upsert(chunks)
+        with span("ingest.upsert", points=len(chunks), document_id=document_id) as upsert_span:
+            store.delete_document(document_id)
+            written = store.upsert(chunks)
+            upsert_span.set_attribute("indexed.points", written)
 
         partial = caption_failures > 0 or bool(extraction.failures)
         manifest.update(

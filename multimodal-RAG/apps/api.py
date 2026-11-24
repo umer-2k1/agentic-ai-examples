@@ -15,12 +15,14 @@ from .config import ROOT, settings
 from .ingest import delete_document, ingest_document, list_documents, load_manifest, register_pdf
 from .rag import answer as answer_question
 from .rag import stream_answer
+from .telemetry import exporter_name, setup_telemetry
 from .vectorstore import store
 
 WEB = ROOT / "web"
 
 app = FastAPI(title="Multimodal RAG", version="1.0.0")
 settings.ensure_dirs()
+setup_telemetry(app)
 app.mount("/assets", StaticFiles(directory=str(settings.asset_dir)), name="assets")
 app.mount("/static", StaticFiles(directory=str(WEB)), name="static")
 
@@ -50,7 +52,7 @@ def health():
     checks = {"qdrant": store.health(), "openrouter": bool(settings.openrouter_key)}
     ok = checks["qdrant"].get("ok", False) and checks["openrouter"]
     return {"ok": ok, "checks": checks, "collection": settings.collection,
-            "embed_model": settings.embed_model}
+            "embed_model": settings.embed_model, "telemetry": exporter_name()}
 
 
 @app.post("/api/documents", status_code=201)

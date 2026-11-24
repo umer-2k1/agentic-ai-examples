@@ -17,5 +17,6 @@ multimodal-RAG/.qdrant/
 # runtime data
 multimodal-RAG/data/manifests/
 multimodal-RAG/data/captions/
+multimodal-RAG/data/traces.jsonl
 multimodal-RAG/data/pdfs/*
 !multimodal-RAG/data/pdfs/.gitkeep

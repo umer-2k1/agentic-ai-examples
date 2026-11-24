@@ -44,7 +44,33 @@ OPENROUTER_API_KEY=...
 # optional — defaults are free models with fallbacks
 OPENROUTER_VISION_MODEL=
 OPENROUTER_TEXT_MODEL=
+
+# optional — tracing
+LANGSMITH_API_KEY=
+LANGSMITH_PROJECT=multimodal-rag
 ```
+
+---
+
+## Tracing
+
+OpenTelemetry spans are created for every stage, then exported to **LangSmith** over OTLP when
+`LANGSMITH_API_KEY` is set. Without a key they are written to `data/traces.jsonl` (one JSON per span).
+
+| Span | Attributes |
+|---|---|
+| `POST /api/query` | http route, status |
+| `retrieval.search` | k, candidates, top score |
+| `llm.chat` / `llm.stream` | model, provider, tokens, status code |
+| `ingest.extract` | pages, figures, tables |
+| `ingest.caption` | page, kind, model |
+| `ingest.upsert` | points |
+
+Httpx spans for Qdrant and OpenRouter are captured automatically. The answer footer shows the
+first 16 characters of the trace id — search it in LangSmith to see the waterfall.
+
+Use another backend (Jaeger, Tempo, Honeycomb) with `OTEL_EXPORTER_OTLP_ENDPOINT=http://…:4318`.
+Disable entirely with `OTEL_ENABLED=0`.
 
 ---
 

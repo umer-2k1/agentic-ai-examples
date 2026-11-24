@@ -10,6 +10,7 @@ let currentSources = [];
 let startedAt = 0;
 let finalized = false;
 let askSeq = 0;
+let currentTrace = "";
 let phase = "retrieving";
 let ticker = null;
 
@@ -233,6 +234,7 @@ function resetAnswer() {
   $("#evidenceHead").hidden = true;
   currentAnswer = "";
   currentSources = [];
+  currentTrace = "";
   finalized = false;
   startedAt = Date.now();
   clearInterval(ticker);
@@ -259,8 +261,9 @@ function finalize() {
   $("#answerBody").innerHTML = linkify(currentAnswer);
   const secs = ((Date.now() - startedAt) / 1000).toFixed(1);
   const visuals = currentSources.filter((s) => s.modality === "visual").length;
+  const trace = currentTrace ? ` · trace ${currentTrace.slice(0, 16)}…` : "";
   $("#answerFoot").textContent =
-    `${secs}s · ${currentSources.length} sources · ${visuals} image${visuals === 1 ? "" : "s"}`;
+    `${secs}s · ${currentSources.length} sources · ${visuals} image${visuals === 1 ? "" : "s"}${trace}`;
   $("#copyBtn").hidden = !currentAnswer.trim();
   document.querySelectorAll(".cite").forEach((b) => {
     b.onclick = () => {
@@ -366,6 +369,7 @@ async function ask(question) {
         $("#route").className = "route " + (data.route === "vision" ? "vision" : "");
         $("#answer").classList.toggle("vision", data.route === "vision");
         const visuals = (data.sources || []).filter((s) => s.modality === "visual").length;
+        currentTrace = data.trace_id || "";
         setPhase(visuals ? `reading ${visuals} image${visuals === 1 ? "" : "s"}` : "reading context");
         renderSources(data.sources || []);
         renderEvidence(data.sources || []);
