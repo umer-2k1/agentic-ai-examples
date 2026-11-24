@@ -187,13 +187,24 @@ def ingest_document(document_id: str, force: bool = False) -> dict:
         caption_failures = 0
         progress_lock = threading.Lock()
 
+        def figure_title(fig):
+            # pick the caption/title directly above *this* figure, not its neighbour
+            above = [t for t in extraction.text
+                     if t.page == fig.page
+                     and t.bbox[3] <= fig.bbox[1] + 6
+                     and t.bbox[0] < fig.bbox[2] and t.bbox[2] > fig.bbox[0]]
+            return max(above, key=lambda t: t.bbox[3]).text if above else ""
+
         def work(job):
             fig, rel_path, asset_hash, n = job
             try:
                 caption, model = caption_png(fig.png)
                 return job, caption, model, True
             except CaptionError:
-                return job, "", None, False
+                # deterministic fallback so the figure is still retrievable
+                title = figure_title(fig)
+                fallback = " ".join(x for x in [title, f"Figure on page {fig.page}.", fig.labels] if x).strip()
+                return job, fallback, None, False
 
         results = []
         with ThreadPoolExecutor(max_workers=4) as pool:
@@ -210,6 +221,9 @@ def ingest_document(document_id: str, force: bool = False) -> dict:
             fig, rel_path, asset_hash, n = job
             if not ok:
                 caption_failures += 1
+            title = figure_title(fig)
+            if title and title.lower() not in caption.lower():
+                caption = f"{title}\n\n{caption}".strip()
             if fig.labels:
                 caption = f"{caption}\n\nLabels: {fig.labels}".strip()
             if not caption:
