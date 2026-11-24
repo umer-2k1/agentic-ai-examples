@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "documents": {
+    "NovaCore": "NovaCore_Multimodal_Company_Report_2026.pdf",
+    "Siddiqui": "Siddiqui_Children_Pediatric_Medical_History_2026.pdf"
+  },
+  "questions": [
+    {
+      "id": "S01", "category": "simple", "type": "answerable",
+      "question": "What was FY2026 revenue?",
+      "expected_answer": "USD 132.0 million",
+      "must_include": ["132.0"],
+      "expected_docs": ["NovaCore"], "expected_pages": [2, 3]
+    },
+    {
+      "id": "S02", "category": "simple", "type": "answerable",
+      "question": "What was the operating margin in FY2026?",
+      "expected_answer": "18.4%",
+      "must_include": ["18.4"],
+      "expected_docs": ["NovaCore"], "expected_pages": [3]
+    },
+    {
+      "id": "S03", "category": "simple", "type": "answerable",
+      "question": "How many employees did NovaCore have at year end?",
+      "expected_answer": "1,480",
+      "must_include": ["1480"],
+      "expected_docs": ["NovaCore"], "expected_pages": [1, 2]
+    },
+    {
+      "id": "S04", "category": "simple", "type": "answerable",
+      "question": "Which region grew fastest in 2026?",
+      "expected_answer": "Europe, 31%",
+      "must_include": ["europe"],
+      "expected_docs": ["NovaCore"], "expected_pages": [2, 4]
+    },
+    {
+      "id": "S05", "category": "simple", "type": "answerable",
+      "question": "Which region had the highest customer satisfaction score?",
+      "expected_answer": "Asia Pacific, 4.8/5",
+      "must_include": ["asia"],
+      "expected_docs": ["NovaCore"], "expected_pages": [4]
+    },
+    {
+      "id": "S06", "category": "simple", "type": "answerable",
+      "question": "Which product has the highest gross margin?",
+      "expected_answer": "AtlasEdge X1, 46%",
+      "must_include": ["atlas", "46"],
+      "expected_docs": ["NovaCore"], "expected_pages": [5]
+    },
+    {
+      "id": "S07", "category": "simple", "type": "answerable",
+      "question": "Which product shipped the highest number of units?",
+      "expected_answer": "CoreSense Mini, 31,500 units",
+      "must_include": ["coresense"],
+      "expected_docs": ["NovaCore"], "expected_pages": [5]
+    },
+    {
+      "id": "S08", "category": "simple", "type": "answerable",
+      "question": "What is the P1 response target?",
+      "expected_answer": "15 minutes",
+      "must_include": ["15"],
+      "expected_docs": ["NovaCore"], "expected_pages": [7]
+    },
+    {
+      "id": "S09", "category": "simple", "type": "answerable",
+      "question": "What was the average support resolution time in August?",
+      "expected_answer": "8.1 hours",
+      "must_include": ["8.1"],
+      "expected_docs": ["NovaCore"], "expected_pages": [7]
+    },
+    {
+      "id": "S10", "category": "simple", "type": "answerable",
+      "question": "What percentage of Penang electricity came from solar?",
+      "expected_answer": "34%",
+      "must_include": ["34"],
+      "expected_docs": ["NovaCore"], "expected_pages": [8]
+    },
+    {
+      "id": "S11", "category": "simple", "type": "answerable",
+      "question": "What is the FY2027 revenue target?",
+      "expected_answer": "USD 158–166 million",
+      "must_include": ["158", "166"],
+      "expected_docs": ["NovaCore"], "expected_pages": [9]
+    },
+    {
+      "id": "S12", "category": "simple", "type": "answerable",
+      "question": "How much did NovaCore invest in the Penang facility?",
+      "expected_answer": "USD 11.5 million",
+      "must_include": ["11.5"],
+      "expected_docs": ["NovaCore"], "expected_pages": [2]
+    },
+    {
+      "id": "S13", "category": "simple", "type": "answerable",
+      "question": "What is Ayaan's blood group?",
+      "expected_answer": "O positive",
+      "must_include": ["o positive"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [1]
+    },
+    {
+      "id": "S14", "category": "simple", "type": "answerable",
+      "question": "What is Maya's date of birth?",
+      "expected_answer": "22 July 2019",
+      "must_include": ["22 july 2019"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [1]
+    },
+    {
+      "id": "S15", "category": "simple", "type": "answerable",
+      "question": "What was Ayaan's height at age 10?",
+      "expected_answer": "138.0 cm",
+      "must_include": ["138"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [3]
+    },
+    {
+      "id": "S16", "category": "simple", "type": "answerable",
+      "question": "What was Maya's weight at age 2?",
+      "expected_answer": "11.8 kg",
+      "must_include": ["11.8"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [3]
+    },
+    {
+      "id": "S17", "category": "simple", "type": "answerable",
+      "question": "Which vaccination is due in November 2026?",
+      "expected_answer": "HPV dose 1 for Ayaan",
+      "must_include": ["hpv"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [2, 7]
+    },
+    {
+      "id": "S18", "category": "simple", "type": "answerable",
+      "question": "What is Maya's peanut-specific IgE?",
+      "expected_answer": "0.8 kU/L",
+      "must_include": ["0.8"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7]
+    },
+    {
+      "id": "S19", "category": "simple", "type": "answerable",
+      "question": "Which medication is Ayaan's asthma controller?",
+      "expected_answer": "Fluticasone propionate 50 µg twice daily",
+      "must_include": ["fluticasone"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [6]
+    },
+    {
+      "id": "S20", "category": "simple", "type": "answerable",
+      "question": "When was Ayaan's asthma diagnosed?",
+      "expected_answer": "June 2019, at age 3",
+      "must_include": ["2019"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [5]
+    },
+    {
+      "id": "S21", "category": "simple", "type": "answerable",
+      "question": "What is Ayaan's BMI at age 10?",
+      "expected_answer": "16.0, 40th percentile",
+      "must_include": ["16.0"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [3]
+    },
+    {
+      "id": "S22", "category": "simple", "type": "answerable",
+      "question": "How many immunisation doses has Ayaan completed?",
+      "expected_answer": "34 of 36",
+      "must_include": ["34"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7]
+    },
+
+    {
+      "id": "V01", "category": "visual", "type": "answerable",
+      "question": "Which quarter had the highest revenue in the quarterly chart?",
+      "expected_answer": "Q4 2026",
+      "must_include": ["q4"],
+      "expected_docs": ["NovaCore"], "expected_pages": [3]
+    },
+    {
+      "id": "V02", "category": "visual", "type": "answerable",
+      "question": "By how much did support resolution time fall between January and August?",
+      "expected_answer": "From 14.2 h to 8.1 h, about 43%",
+      "must_include": ["14.2", "8.1"],
+      "expected_docs": ["NovaCore"], "expected_pages": [7]
+    },
+    {
+      "id": "V03", "category": "visual", "type": "answerable",
+      "question": "What was the electricity mix at the Penang facility?",
+      "expected_answer": "Grid 51%, solar 34%, purchased renewables 15%",
+      "must_include": ["51", "34", "15"],
+      "expected_docs": ["NovaCore"], "expected_pages": [8]
+    },
+    {
+      "id": "V04", "category": "visual", "type": "answerable",
+      "question": "What sits between Assembly and the Regional Hubs in the supply-chain diagram?",
+      "expected_answer": "The Quality Lab in Singapore",
+      "must_include": ["quality"],
+      "expected_docs": ["NovaCore"], "expected_pages": [6]
+    },
+    {
+      "id": "V05", "category": "visual", "type": "answerable",
+      "question": "Which two risks sit in the low-likelihood, high-impact cell of the risk matrix?",
+      "expected_answer": "Peanut anaphylaxis and Maya's peanut allergy conversion",
+      "must_include": ["peanut", "maya"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [9]
+    },
+    {
+      "id": "V06", "category": "visual", "type": "answerable",
+      "question": "Looking at the growth chart, what was Ayaan's height at age 6?",
+      "expected_answer": "About 116 cm",
+      "must_include": ["116"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [3]
+    },
+
+    {
+      "id": "R01", "category": "relationship", "type": "answerable",
+      "question": "Which clinician treats both children, and how many visits do they have on record?",
+      "expected_answer": "Dr Hina Qureshi, the paediatrician, 19 visits",
+      "must_include": ["qureshi", "19"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [8]
+    },
+    {
+      "id": "R02", "category": "relationship", "type": "answerable",
+      "question": "Which medication is prescribed because of Ayaan's peanut allergy?",
+      "expected_answer": "Adrenaline auto-injector 0.15 mg",
+      "must_include": ["adrenaline"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [6, 7]
+    },
+    {
+      "id": "R03", "category": "relationship", "type": "answerable",
+      "question": "Which child is sensitised to peanut but does not carry an auto-injector?",
+      "expected_answer": "Maya",
+      "must_include": ["maya"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7]
+    },
+    {
+      "id": "R04", "category": "relationship", "type": "answerable",
+      "question": "Which child has a documented penicillin allergy, and what should be avoided?",
+      "expected_answer": "Ayaan; avoid penicillin",
+      "must_include": ["ayaan", "penicillin"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7]
+    },
+    {
+      "id": "R05", "category": "relationship", "type": "answerable",
+      "question": "Which condition resolved in 2024, and which treatment stopped with it?",
+      "expected_answer": "Maya's atopic dermatitis; emollients/hydrocortisone stopped",
+      "must_include": ["eczema"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [5, 6]
+    },
+    {
+      "id": "R06", "category": "relationship", "type": "answerable",
+      "question": "How many active treatments does Ayaan have, and which one is emergency-only?",
+      "expected_answer": "Five active treatments; the adrenaline auto-injector is emergency-only",
+      "must_include": ["adrenaline"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [6, 8]
+    },
+    {
+      "id": "R07", "category": "relationship", "type": "answerable",
+      "question": "Which guardian holds primary consent, and which clinician covers the household?",
+      "expected_answer": "Sana Siddiqui (mother); Dr Hina Qureshi",
+      "must_include": ["sana", "qureshi"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [8]
+    },
+    {
+      "id": "R08", "category": "relationship", "type": "answerable",
+      "question": "Why was Maya tested for peanut sensitisation?",
+      "expected_answer": "Because her brother Ayaan has a diagnosed peanut allergy — a sibling screen",
+      "must_include": ["ayaan"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7, 8]
+    },
+    {
+      "id": "R09", "category": "relationship", "type": "answerable",
+      "question": "Which condition affects both children?",
+      "expected_answer": "Allergic rhinitis",
+      "must_include": ["rhinitis"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [5]
+    },
+    {
+      "id": "R10", "category": "relationship", "type": "answerable",
+      "question": "Which child had iron-deficiency anaemia, and when did it resolve?",
+      "expected_answer": "Ayaan; resolved in 2022",
+      "must_include": ["ayaan", "2022"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [5]
+    },
+    {
+      "id": "R11", "category": "relationship", "type": "answerable",
+      "question": "What is planned if Ayaan's peanut IgE falls below 5 kU/L?",
+      "expected_answer": "Peanut oral immunotherapy will be discussed",
+      "must_include": ["immunotherapy"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [9]
+    },
+    {
+      "id": "R12", "category": "relationship", "type": "answerable",
+      "question": "Which vaccine is due for Ayaan at age 11?",
+      "expected_answer": "MenACWY booster",
+      "must_include": ["menacwy"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [7, 9]
+    },
+
+    {
+      "id": "X01", "category": "cross_document", "type": "answerable",
+      "question": "Which document contains a 3x3 likelihood/impact risk matrix?",
+      "expected_answer": "The Siddiqui children's record, page 9",
+      "must_include": ["matrix"],
+      "expected_docs": ["Siddiqui"], "expected_pages": [9]
+    },
+    {
+      "id": "X02", "category": "cross_document", "type": "answerable",
+      "question": "Which document contains an immunisation schedule, and which contains a supply-chain diagram?",
+      "expected_answer": "Siddiqui has the immunisation schedule; NovaCore has the supply chain",
+      "must_include": ["siddiqui", "novacore"],
+      "expected_docs": ["Siddiqui", "NovaCore"], "expected_pages": [6, 7]
+    },
+    {
+      "id": "X03", "category": "cross_document", "type": "answerable",
+      "question": "What is NovaCore's FY2026 operating margin, and what is Ayaan's BMI at age 10?",
+      "expected_answer": "18.4% and 16.0",
+      "must_include": ["18.4", "16.0"],
+      "expected_docs": ["NovaCore", "Siddiqui"], "expected_pages": [3]
+    },
+    {
+      "id": "X04", "category": "cross_document", "type": "answerable",
+      "question": "Which document mentions Penang, and which mentions Karachi?",
+      "expected_answer": "NovaCore mentions Penang; Siddiqui mentions Karachi",
+      "must_include": ["penang", "karachi"],
+      "expected_docs": ["NovaCore", "Siddiqui"], "expected_pages": [2, 6]
+    },
+
+    {
+      "id": "N01", "category": "negative", "type": "unanswerable",
+      "question": "What was Ayaan's weight at age 2?",
+      "expected_answer": "Not in the document (the growth table starts at birth, then age 4)",
+      "must_include": [], "must_not_include": ["11.8", "12.4", "kg at 2"],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N02", "category": "negative", "type": "unanswerable",
+      "question": "What was Ayaan's BMI at age 2?",
+      "expected_answer": "Not recorded — no BMI for Ayaan at age 2",
+      "must_include": [], "must_not_include": ["16.3", "16.4"],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N03", "category": "negative", "type": "unanswerable",
+      "question": "What is Maya's blood pressure?",
+      "expected_answer": "Not recorded",
+      "must_include": [], "must_not_include": [],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N04", "category": "negative", "type": "unanswerable",
+      "question": "What was NovaCore's FY2024 revenue?",
+      "expected_answer": "Not in the document (only FY2025 and FY2026)",
+      "must_include": [], "must_not_include": ["97.5", "132.0"],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N05", "category": "negative", "type": "unanswerable",
+      "question": "Who is the CEO of NovaCore?",
+      "expected_answer": "Not in the document",
+      "must_include": [], "must_not_include": [],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N06", "category": "negative", "type": "unanswerable",
+      "question": "What is Dr Hina Qureshi's phone number?",
+      "expected_answer": "Not in the document",
+      "must_include": [], "must_not_include": [],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N07", "category": "negative", "type": "unanswerable",
+      "question": "What is Ayaan's IQ score?",
+      "expected_answer": "Not recorded",
+      "must_include": [], "must_not_include": [],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N08", "category": "negative", "type": "unanswerable",
+      "question": "Which school does Maya attend?",
+      "expected_answer": "Not in the document",
+      "must_include": [], "must_not_include": [],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N09", "category": "negative", "type": "unanswerable",
+      "question": "What was Ayaan's weight at age 3?",
+      "expected_answer": "Not in the document (no age-3 row and no weight chart)",
+      "must_include": [], "must_not_include": ["14.2", "14.0"],
+      "expected_docs": [], "expected_pages": []
+    },
+    {
+      "id": "N10", "category": "negative", "type": "unanswerable",
+      "question": "How many employees did NovaCore have in 2024?",
+      "expected_answer": "Not in the document",
+      "must_include": [], "must_not_include": ["1,480", "1480"],
+      "expected_docs": [], "expected_pages": []
+    }
+  ]
+}
