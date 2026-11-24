@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -39,6 +39,12 @@ def index():
     return FileResponse(WEB / "index.html")
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return Response(status_code=204)
+
+
+@app.get("/health")
 @app.get("/api/health")
 def health():
     checks = {"qdrant": store.health(), "openrouter": bool(settings.openrouter_key)}
