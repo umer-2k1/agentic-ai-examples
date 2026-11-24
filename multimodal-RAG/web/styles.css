@@ -15,6 +15,7 @@
   --amber: #d97706;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
@@ -163,7 +164,10 @@ table.docs tr:last-child td { border-bottom: 0; }
 .answer.vision{ border-top-color:var(--orange); }
 .answer-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .answer-title{ font-size:10.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); }
-.answer-meta{ font-size:11.5px; color:var(--soft); }
+.answer-meta{ font-size:11.5px; color:var(--soft); font-variant-numeric: tabular-nums; }
+.answer-meta.waiting::before{ content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--amber); margin-right:6px; vertical-align:1px; animation:pulse 1.2s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{opacity:.35} 50%{opacity:1} }
 .answer-actions{ margin-left:auto; display:flex; gap:12px; }
 .answer-actions .link{ font-size:12px; }
 .source-row{ display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:10px; border-top:1px dashed #eceff5; }

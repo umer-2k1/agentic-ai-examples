@@ -9,6 +9,9 @@ let currentAnswer = "";
 let currentSources = [];
 let startedAt = 0;
 let finalized = false;
+let askSeq = 0;
+let phase = "retrieving";
+let ticker = null;
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -202,6 +205,18 @@ function currentModalities() {
   return active && active.dataset.mod ? [active.dataset.mod] : null;
 }
 
+function setPhase(text) {
+  phase = text;
+  renderMeta();
+}
+
+function renderMeta() {
+  if (finalized) return;
+  const secs = Math.floor((Date.now() - startedAt) / 1000);
+  $("#answerMeta").textContent = `${phase} · ${secs}s`;
+  $("#answerMeta").classList.toggle("waiting", secs >= 2);
+}
+
 function resetAnswer() {
   $("#answer").hidden = false;
   $("#answer").classList.remove("vision");
@@ -220,6 +235,9 @@ function resetAnswer() {
   currentSources = [];
   finalized = false;
   startedAt = Date.now();
+  clearInterval(ticker);
+  setPhase("retrieving");
+  ticker = setInterval(renderMeta, 1000);
 }
 
 function finishStream() {
@@ -236,6 +254,7 @@ function linkify(text) {
 function finalize() {
   if (finalized) return;
   finalized = true;
+  clearInterval(ticker);
   finishStream();
   $("#answerBody").innerHTML = linkify(currentAnswer);
   const secs = ((Date.now() - startedAt) / 1000).toFixed(1);
@@ -325,6 +344,7 @@ async function ask(question) {
   if (!question) return;
   if (controller) controller.abort();
   controller = new AbortController();
+  const my = ++askSeq;
   lastQuery = question;
 
   resetAnswer();
@@ -340,15 +360,19 @@ async function ask(question) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     await readSSE(res, (event, data) => {
+      if (my !== askSeq) return;
       if (event === "meta") {
         $("#route").textContent = data.route === "none" ? "no hits" : data.route;
         $("#route").className = "route " + (data.route === "vision" ? "vision" : "");
+        $("#answer").classList.toggle("vision", data.route === "vision");
+        const visuals = (data.sources || []).filter((s) => s.modality === "visual").length;
+        setPhase(visuals ? `reading ${visuals} image${visuals === 1 ? "" : "s"}` : "reading context");
         renderSources(data.sources || []);
         renderEvidence(data.sources || []);
       } else if (event === "token") {
         currentAnswer += data.text;
         $("#answerBody").textContent = currentAnswer;
-        $("#answerMeta").textContent = "streaming…";
+        setPhase("writing");
       } else if (event === "done") {
         finalize();
       } else if (event === "error") {
@@ -362,7 +386,7 @@ async function ask(question) {
       $("#answerBody").textContent = `Request failed: ${e.message}`;
     }
   } finally {
-    finalize();
+    if (my === askSeq) finalize();
     controller = null;
   }
 }
